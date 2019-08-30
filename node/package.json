@@ -1,0 +1,30 @@
+{
+  "name": "phenix-edge-auth",
+  "version": "2019.0.1",
+  "license": "Apache-2.0",
+  "private": false,
+  "main": "src/TokenBuilder.js",
+  "repository": "https://github.com/PhenixRTS/EdgeAuth.git",
+  "scripts": {
+    "preinstall": "npm prune",
+    "pretest": "npm install",
+    "test": "jest",
+    "posttest": "npm run lint",
+    "lint": "eslint . --cache --ignore-path .gitignore",
+    "lint-fix": "eslint . --fix --ignore-path .gitignore"
+  },
+  "dependencies": {},
+  "engines": {
+    "node": ">=10.15.3"
+  },
+  "devDependencies": {
+    "commander": "^3.0.0",
+    "eslint": "6.1.0",
+    "eslint-plugin-notice": "0.8.8",
+    "jest": "^24.9.0",
+    "yargs": "4.3.2"
+  },
+  "jest": {
+    "verbose": true
+  }
+}
