@@ -16,7 +16,7 @@
 const TokenBuilder = require('../src/TokenBuilder');
 const DigestTokens = require('../src/DigestTokens');
 
-describe('WhenVerifyingAToken', () => {
+describe('When verifying a token for publishing', () => {
   var token;
 
   beforeEach(() => {
@@ -28,11 +28,11 @@ describe('WhenVerifyingAToken', () => {
       .build();
   });
 
-  test('TheTokenMatchesTheExpectedValue', () => {
+  test('The token matches the expected value', () => {
     expect(token).toBe('DIGEST:eyJhcHBsaWNhdGlvbklkIjoibXktYXBwbGljYXRpb24taWQiLCJkaWdlc3QiOiI4WHEwMnNrZkM2R24vWVdtMExMalFOajVZTzJqR0RBYXAvc3NqUE1mdWgyamtrWXZpS1FGTkQwRm9DU0RxVXg5U2wrSTArYWpKMHRsQWhUdTN4dTdHQT09IiwidG9rZW4iOiJ7XCJleHBpcmVzXCI6MTAwMCxcInR5cGVcIjpcInN0cmVhbVwifSJ9');
   });
 
-  test('TheTokenSuccessfullyVerifiesWithTheCorrectSecret', () => {
+  test('The token successfully verifies with the correct secret', () => {
     const result = new DigestTokens().verifyAndDecode('my-secret', token);
 
     expect(result.verified).toBe(true);
@@ -40,7 +40,7 @@ describe('WhenVerifyingAToken', () => {
     expect(result.value).not.toBe(undefined);
   });
 
-  test('TheTokenFailsToVerifyWithABadSecret', () => {
+  test('The token fails to verify with a bad secret', () => {
     const result = new DigestTokens().verifyAndDecode('bad-secret', token);
 
     expect(result.verified).toBe(false);

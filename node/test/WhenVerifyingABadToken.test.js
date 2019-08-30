@@ -15,10 +15,10 @@
  */
 const DigestTokens = require('../src/DigestTokens');
 
-describe('WhenVerifyingABadToken', () => {
+describe('When verifying a bad token', () => {
   const token = 'DIGEST:bad-token';
 
-  test('TheTokenFailsToVerify', () => {
+  test('The token fails to verify', () => {
     const result = new DigestTokens().verifyAndDecode('bad-secret', token);
 
     expect(result.verified).toBe(false);

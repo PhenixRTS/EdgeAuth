@@ -29,7 +29,7 @@ import org.jetbrains.annotations.Contract;
 public final class TokenBuilder {
   private static final String FIELD_TYPE = "type";
   private static final String FIELD_ORIGIN_STREAM_ID = "originStreamId";
-  private static final String FIELD_SUBSCRIBER_TAG = "subscriberTag";
+  private static final String FIELD_SUBSCRIBER_TAG = "subscribeTag";
   private static final String FIELD_APPLY_TAGS = "applyTags";
   private String applicationId;
   private String secret;

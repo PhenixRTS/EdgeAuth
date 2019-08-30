@@ -6,7 +6,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
-public class WhenVerifyingAToken {
+public class WhenVerifyingATokenForPublishing {
   private String token;
 
   @BeforeTest
