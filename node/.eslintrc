@@ -1,0 +1,96 @@
+/**
+ * Copyright 2019 Phenix Real Time Solutions, Inc. Confidential and Proprietary. All Rights Reserved.
+ */
+
+{
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "experimentalObjectRestSpread": true
+    }
+  },
+  "env": {
+    "node": true,
+    "jest": true
+  },
+  "extends": [
+    "eslint:recommended"
+  ],
+  "plugins": [
+    "notice"
+  ],
+  "rules" : {
+    // Possible Errors - http://eslint.org/docs/rules/#possible-errors
+    "no-console": 0,
+
+    // Best Practices - http://eslint.org/docs/rules/#best-practices
+    "curly": 2,
+    "default-case": 2,
+    "eqeqeq": 2,
+    "no-alert": 2,
+    "no-else-return": 2,
+    "no-multi-spaces": 2,
+    "no-unused-vars": ["error", { "varsIgnorePattern": "[iI]gnored" }],
+    "yoda": 2,
+
+    // Stylistic Issues - http://eslint.org/docs/rules/#stylistic-issues
+    "array-bracket-newline": [0, { "": null }],
+    "array-bracket-spacing": 0,
+    "block-spacing": 2,
+    "brace-style": 2,
+    "camelcase": [2, {"properties": "never"}],
+    "capitalized-comments": [2, "always", { "ignoreConsecutiveComments": true, "ignoreInlineComments": true }],
+    "comma-dangle": [2, {
+      "arrays": "never",
+      "objects": "never",
+      "imports": "never",
+      "exports": "never",
+      "functions": "ignore"
+    }],
+    "comma-spacing": [2, { "before": false, "after": true }],
+    "comma-style": [2, "last"],
+    "computed-property-spacing": [2, "never"],
+    "eol-last": [2, "never"],
+    "func-call-spacing": [2, "never"],
+    "func-names": [2, "never"],
+    "key-spacing": [2, {"beforeColon": false}],
+    "keyword-spacing": 2,
+    "new-parens": 2,
+    "no-multiple-empty-lines": ["error", { "max": 1 }],
+    "no-trailing-spaces": 2,
+    "object-curly-newline": [2, { "multiline": true }],
+    "object-curly-spacing": [2, "never"],
+    "object-property-newline": 2,
+    "padded-blocks": ["error", "never"],
+    "padding-line-between-statements": [2,
+      { "blankLine": "always", "prev": "*", "next": "return" },
+      { "blankLine": "always", "prev": "*", "next": "if" },
+      { "blankLine": "always", "prev": "*", "next": "throw" },
+      { "blankLine": "always", "prev": "function", "next": ["function", "block-like", "multiline-block-like"] },
+      { "blankLine": "always", "prev": "class", "next": "*" },
+      { "blankLine": "never", "prev": ["const", "let"], "next": ["const", "let"] },
+      { "blankLine": "always", "prev": "block-like", "next": "*" },
+      { "blankLine": "always", "prev": "block", "next": "*" },
+      { "blankLine": "always", "prev": "multiline-block-like", "next": "*" },
+      { "blankLine": "always", "prev": "expression", "next": "*" },
+      { "blankLine": "any", "prev": "expression", "next": "expression" }
+    ],
+    "prefer-arrow-callback": [ 2, { "allowNamedFunctions": false, "allowUnboundThis": false } ],
+    "quote-props": ["error", "as-needed"],
+    "quotes": ["error", "single", { "allowTemplateLiterals": true }],
+    "semi": [2, "always"],
+    "spaced-comment": [2, "always"],
+    "space-before-function-paren": ["error", "never"],
+    "space-infix-ops": ["error", {"int32Hint": false}],
+
+    // Rules specific to this project
+    "indent": [2, 2, { "SwitchCase": 1 }],
+    "no-tabs": 2,
+    "notice/notice":["error", {
+      "mustMatch": "Copyright 2019 Phenix Real Time Solutions, Inc.",
+      "templateFile": "copyright.tmpl",
+      "onNonMatchingHeader": "replace"
+    }]
+  }
+}

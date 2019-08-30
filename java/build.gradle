@@ -1,0 +1,115 @@
+plugins {
+    id 'java-library'
+    id 'maven'
+    id 'maven-publish'
+    id 'signing'
+    id 'checkstyle'
+}
+
+group 'com.phenixrts.edgeauth'
+version '1.0.1'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile group: 'javax.json', name: 'javax.json-api', version: '1.1.4'
+    compile group: 'org.glassfish', name: 'javax.json', version: '1.1.4'
+    compile group: 'commons-cli', name: 'commons-cli', version: '1.4'
+    compile group: 'org.jetbrains', name: 'annotations', version: '16.0.1'
+
+    testCompile group: 'org.testng', name: 'testng', version: '7.0.0'
+}
+
+test {
+    useTestNG()
+
+    include 'com/phenixrts/**'
+}
+
+task sourceJar(type: Jar) {
+    classifier 'sources'
+    from sourceSets.main.allJava
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier 'javadoc'
+    from javadoc.destinationDir
+}
+
+task uberJar(type: Jar) {
+    manifest {
+        attributes(
+                'Main-Class': 'com.phenixrts.edgeauth.EdgeAuth'
+        )
+    }
+    archiveClassifier = 'bundle'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+
+artifacts {
+    archives jar
+    archives sourceJar
+    archives javadocJar
+    archives uberJar
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+            artifact(sourceJar) {
+                classifier = 'sources'
+            }
+            artifact(javadocJar) {
+                classifier = 'javadoc'
+            }
+            artifact(uberJar) {
+                classifier = 'bundle'
+            }
+            pom {
+                name = 'Phenix Secure EdgeAuth'
+                description = 'SDK to generate secure digest tokens for the Phenix platform'
+                url = 'https://github.com/PhenixRTS/EdgeAuth'
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'phenix'
+                        name = 'Phenix Real Time Solutions, Inc.'
+                        email = 'info@phenixrts.com'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:git://github.com/PhenixRTS/EdgeAuth.git'
+                    developerConnection = 'scm:git:ssh://github.com/PhenixRTS/EdgeAuth.git'
+                    url = 'https://github.com/PhenixRTS/EdgeAuth'
+                }
+            }
+        }
+    }
+    repositories {
+        maven {
+            name 'maven-central'
+            def snapshotsRepositoryUrl = 'https://oss.sonatype.org/content/repositories/snapshots'
+            def releasesRepositoryUrl = 'https://oss.sonatype.org/service/local/staging/deploy/maven2'
+            url = version.endsWith('SNAPSHOT') ? snapshotsRepositoryUrl : releasesRepositoryUrl
+            credentials {
+                username repositoryUsername
+                password repositoryPassword
+            }
+        }
+    }
+}
+
+signing {
+    sign publishing.publications.maven
+}
