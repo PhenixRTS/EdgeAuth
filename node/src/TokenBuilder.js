@@ -147,6 +147,22 @@ TokenBuilder.prototype.forChannel = function(channelId) {
 };
 
 /**
+ * Limit the token to the specified channel alias (optional).
+ *
+ * @param channelAlias the channel alias
+ * @returns {TokenBuilder} itself
+ */
+TokenBuilder.prototype.forChannelAlias = function(channelAlias) {
+  if (typeof channelAlias !== 'string') {
+    throw new Error('Channel alias must be a string');
+  }
+
+  this.token.subscribeTag = 'channelAlias:' + channelAlias;
+
+  return this;
+};
+
+/**
  * Apply the tag to the stream when it is setup (optional).
  *
  * @param tag the tag

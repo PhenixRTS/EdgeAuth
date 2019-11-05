@@ -27,6 +27,7 @@ program
   .option('-s, --streamingOnly', 'Token can be used for streaming only')
   .option('-o, --originStreamId <originStreamId>', '[STREAMING] Token is limited to the given origin stream')
   .option('-c, --channel <channelId>', '[STREAMING] Token is limited to the given channel')
+  .option('-i, --channelAlias <channelAlias>', '[STREAMING] Token is limited to the given channel alias')
   .option('-t, --tag <tag>', '[REPORTING] Apply tag to the viewer stream');
 
 program.parse(process.argv);
@@ -55,6 +56,10 @@ if (program.originStreamId) {
 
 if (program.channel) {
   tokenBuilder.forChannel(program.channel);
+}
+
+if (program.channelAlias) {
+  tokenBuilder.forChannel(program.channelAlias);
 }
 
 if (program.tag) {

@@ -6,7 +6,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
-public class WhenVerifyingATokenForAChannel {
+public class WhenVerifyingATokenForAChannelAlias {
   private String token;
 
   @BeforeTest
@@ -15,14 +15,14 @@ public class WhenVerifyingATokenForAChannel {
         .withApplicationId("my-application-id")
         .withSecret("my-secret")
         .expiresAt(new Date(1000L))
-        .forChannel("us-northeast#my-application-id#my-channel.134566")
+        .forChannelAlias("my-channel.134566")
         .forStreamingOnly()
         .build();
   }
 
   @Test
   void theTokenMatchesTheExpectedValue() {
-    Assert.assertEquals(token, "DIGEST:eyJhcHBsaWNhdGlvbklkIjoibXktYXBwbGljYXRpb24taWQiLCJkaWdlc3QiOiIzSHByd0VienJEOWp1ODhuSkIzZklhdXNCd2tQQUFIdUV3aHZUNWYzRGJMaUpGcHJmeGFBVHd0ODdwcDlqNkNWSTlBQWZVTTVLY3NVVmd5K1c0MHFMdz09IiwidG9rZW4iOiJ7XCJleHBpcmVzXCI6MTAwMCxcInN1YnNjcmliZVRhZ1wiOlwiY2hhbm5lbElkOnVzLW5vcnRoZWFzdCNteS1hcHBsaWNhdGlvbi1pZCNteS1jaGFubmVsLjEzNDU2NlwiLFwidHlwZVwiOlwic3RyZWFtXCJ9In0=");
+    Assert.assertEquals(token, "DIGEST:eyJhcHBsaWNhdGlvbklkIjoibXktYXBwbGljYXRpb24taWQiLCJkaWdlc3QiOiJNV21IVXBUL21qM3ZleURGZGt2ODdKVnpnRU5DeUR4eGovVkx5aXZnVWsvcUJvYjZmV1c1UGphbVJCVmlONUo4NjYzbENzSjNxZkZZZ2ZNS1JlazJoQT09IiwidG9rZW4iOiJ7XCJleHBpcmVzXCI6MTAwMCxcInN1YnNjcmliZVRhZ1wiOlwiY2hhbm5lbEFsaWFzOm15LWNoYW5uZWxcIixcInR5cGVcIjpcInN0cmVhbVwifSJ9'");
   }
 
   @Test
@@ -32,7 +32,7 @@ public class WhenVerifyingATokenForAChannel {
     Assert.assertTrue(result.isVerified());
     Assert.assertEquals(result.getCode(), ECode.VERIFIED);
     Assert.assertNotNull(result.getValue());
-    Assert.assertEquals(result.getValue().getString("subscribeTag"), "channelId:us-northeast#my-application-id#my-channel.134566");
+    Assert.assertEquals(result.getValue().getString("subscribeTag"), "channelAlias:my-channel.134566");
   }
 
   @Test

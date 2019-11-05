@@ -167,6 +167,23 @@ public final class TokenBuilder {
   }
 
   /**
+   * Limit the token to the specified channel alias (optional).
+   *
+   * @param channelAlias the channel alias
+   * @return itself
+   */
+  @Contract("null -> fail, _ -> this")
+  public TokenBuilder forChannelAlias(String channelAlias) {
+    if (channelAlias == null) {
+      throw new RuntimeException("Channel alias must not be null");
+    }
+
+    this.tokenBuilder.add(FIELD_SUBSCRIBER_TAG, "channelAlias:" + channelAlias);
+
+    return this;
+  }
+
+  /**
    * Apply the tag to the stream when it is setup (optional).
    *
    * @param tag the tag
