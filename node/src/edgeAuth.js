@@ -59,7 +59,7 @@ if (program.channel) {
 }
 
 if (program.channelAlias) {
-  tokenBuilder.forChannel(program.channelAlias);
+  tokenBuilder.forChannelAlias(program.channelAlias);
 }
 
 if (program.tag) {
