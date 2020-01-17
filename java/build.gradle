@@ -16,10 +16,16 @@ repositories {
 }
 
 dependencies {
-    compile group: 'javax.json', name: 'javax.json-api', version: '1.1.4'
-    compile group: 'org.glassfish', name: 'javax.json', version: '1.1.4'
+    // 1.0 is compatible with Java7
+    // 1.1+ requires Java8+
+    compile group: 'javax.json', name: 'javax.json-api', version: '1.0'
+    compile group: 'org.glassfish', name: 'javax.json', version: '1.0.4'
     compile group: 'commons-cli', name: 'commons-cli', version: '1.4'
     compile group: 'org.jetbrains', name: 'annotations', version: '16.0.1'
+
+    // JAX-B dependencies for JDK 9+
+    compile group: 'jakarta.xml.bind', name: 'jakarta.xml.bind-api', version: '2.3.2'
+    compile group: 'org.glassfish.jaxb', name: 'jaxb-runtime', version: '2.3.2'
 
     testCompile group: 'org.testng', name: 'testng', version: '7.0.0'
 }

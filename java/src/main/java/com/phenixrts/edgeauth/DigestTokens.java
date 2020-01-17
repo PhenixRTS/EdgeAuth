@@ -23,10 +23,12 @@ import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.Map;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import javax.json.Json;
 import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
 import javax.json.JsonReader;
 import javax.json.JsonValue;
 import javax.json.stream.JsonParsingException;
@@ -152,7 +154,7 @@ public final class DigestTokens {
 
     final String[] stringFields = {FIELD_APPLICATION_ID, FIELD_DIGEST, FIELD_TOKEN};
     for (String field : stringFields) {
-      if (info.containsKey(field) && info.getValue('/' + field).getValueType() == JsonValue.ValueType.STRING) {
+      if (info.containsKey(field) && info.get(field).getValueType() == JsonValue.ValueType.STRING) {
         continue;
       }
 
@@ -179,9 +181,15 @@ public final class DigestTokens {
       value = reader.readObject();
     }
 
-    JsonObject result = Json.createObjectBuilder(value)
-        .add(FIELD_APPLICATION_ID, applicationId)
-        .build();
+    JsonObjectBuilder builder = Json.createObjectBuilder();
+
+    for (Map.Entry<String, JsonValue> property : value.entrySet()) {
+      builder.add(property.getKey(), property.getValue());
+    }
+
+    builder.add(FIELD_APPLICATION_ID, applicationId);
+
+    JsonObject result = builder.build();
 
     return new VerifyAndDecodeResult(result);
   }
@@ -209,7 +217,7 @@ public final class DigestTokens {
       throw new RuntimeException("Token must not be null");
     }
 
-    if (!token.containsKey(FIELD_EXPIRES) || token.getValue('/' + FIELD_EXPIRES).getValueType() != JsonValue.ValueType.NUMBER) {
+    if (!token.containsKey(FIELD_EXPIRES) || token.get(FIELD_EXPIRES).getValueType() != JsonValue.ValueType.NUMBER) {
       throw new RuntimeException("Token must have an expiration (milliseconds since UNIX epoch)");
     }
 
