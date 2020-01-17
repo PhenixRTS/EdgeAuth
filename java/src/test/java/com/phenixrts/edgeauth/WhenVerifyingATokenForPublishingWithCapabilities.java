@@ -6,7 +6,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
-public class WhenVerifyingATokenForAChannelAlias {
+public class WhenVerifyingATokenForPublishingWithCapabilities {
   private String token;
 
   @BeforeTest
@@ -15,14 +15,15 @@ public class WhenVerifyingATokenForAChannelAlias {
         .withApplicationId("my-application-id")
         .withSecret("my-secret")
         .expiresAt(new Date(1000L))
-        .forChannelAlias("my-channel")
         .forStreamingOnly()
+        .withCapability("multi-bitrate")
+        .withCapability("streaming")
         .build();
   }
 
   @Test
   void theTokenMatchesTheExpectedValue() {
-    Assert.assertEquals(token, "DIGEST:eyJhcHBsaWNhdGlvbklkIjoibXktYXBwbGljYXRpb24taWQiLCJkaWdlc3QiOiJNV21IVXBUL21qM3ZleURGZGt2ODdKVnpnRU5DeUR4eGovVkx5aXZnVWsvcUJvYjZmV1c1UGphbVJCVmlONUo4NjYzbENzSjNxZkZZZ2ZNS1JlazJoQT09IiwidG9rZW4iOiJ7XCJleHBpcmVzXCI6MTAwMCxcInN1YnNjcmliZVRhZ1wiOlwiY2hhbm5lbEFsaWFzOm15LWNoYW5uZWxcIixcInR5cGVcIjpcInN0cmVhbVwifSJ9");
+    Assert.assertEquals(token, "DIGEST:eyJhcHBsaWNhdGlvbklkIjoibXktYXBwbGljYXRpb24taWQiLCJkaWdlc3QiOiJMQU5xV1d2TWZvMmNxMzM2cEZEZU11VTFHa25YWnhCdEpTNnc1dE9VRXdCK1pmaTA1dWFwaFowUmNpZGFhNmFaUm4rSHkzMUF1eDNqUFlubE9pTnowUT09IiwidG9rZW4iOiJ7XCJleHBpcmVzXCI6MTAwMCxcInR5cGVcIjpcInN0cmVhbVwiLFwiY2FwYWJpbGl0aWVzXCI6W1wibXVsdGktYml0cmF0ZVwiLFwic3RyZWFtaW5nXCJdfSJ9");
   }
 
   @Test
@@ -32,7 +33,9 @@ public class WhenVerifyingATokenForAChannelAlias {
     Assert.assertTrue(result.isVerified());
     Assert.assertEquals(result.getCode(), ECode.VERIFIED);
     Assert.assertNotNull(result.getValue());
-    Assert.assertEquals(result.getValue().getString("subscribeTag"), "channelAlias:my-channel");
+    Assert.assertEquals(result.getValue().getJsonArray("capabilities").size(), 2);
+    Assert.assertEquals(result.getValue().getJsonArray("capabilities").getString(0), "multi-bitrate");
+    Assert.assertEquals(result.getValue().getJsonArray("capabilities").getString(1), "streaming");
   }
 
   @Test

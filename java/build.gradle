@@ -9,7 +9,7 @@ plugins {
 group 'com.phenixrts.edgeauth'
 version '1.1-SNAPSHOT'
 
-sourceCompatibility = 1.8
+sourceCompatibility = 1.7
 
 repositories {
     mavenCentral()

@@ -27,7 +27,7 @@ function TokenBuilder() {
 }
 
 /**
- * The application ID used to sign the token (required).
+ * The application ID used to sign the token. (required)
  *
  * @param applicationId the application ID to sign the token
  * @returns {TokenBuilder} itself
@@ -43,7 +43,7 @@ TokenBuilder.prototype.withApplicationId = function(applicationId) {
 };
 
 /**
- * The secret used to sign the token (required).
+ * The secret used to sign the token. (required)
  *
  * @param secret the shared secret to sign the token
  * @returns {TokenBuilder} itself
@@ -54,6 +54,26 @@ TokenBuilder.prototype.withSecret = function(secret) {
   }
 
   this.secret = secret;
+
+  return this;
+};
+
+/**
+ * Set a capability for the token, e.g. to publish a stream. (optional)
+ *
+ * @param capability the valid capability
+ * @returns {TokenBuilder} itself
+ */
+TokenBuilder.prototype.withCapability = function(capability) {
+  if (typeof capability !== 'string') {
+    throw new Error('Capability must be a string');
+  }
+
+  if (!this.token.capabilities) {
+    this.token.capabilities = [];
+  }
+
+  this.token.capabilities.push(capability);
 
   return this;
 };
@@ -93,7 +113,7 @@ TokenBuilder.prototype.expiresAt = function(expirationDate) {
 };
 
 /**
- * Limit the token to authentication only (optional).
+ * Limit the token to authentication only. (optional)
  *
  * @returns {TokenBuilder} itself
  */
@@ -104,7 +124,7 @@ TokenBuilder.prototype.forAuthenticateOnly = function() {
 };
 
 /**
- * Limit the token to streaming only (optional).
+ * Limit the token to streaming only. (optional)
  *
  * @returns {TokenBuilder} itself
  */
@@ -115,7 +135,7 @@ TokenBuilder.prototype.forStreamingOnly = function() {
 };
 
 /**
- * Limit the token to the specified origin stream ID (optional).
+ * Limit the token to the specified origin stream ID. (optional)
  *
  * @param originStreamId the origin stream ID
  * @returns {TokenBuilder} itself
@@ -131,7 +151,7 @@ TokenBuilder.prototype.forOriginStream = function(originStreamId) {
 };
 
 /**
- * Limit the token to the specified channel ID (optional).
+ * Limit the token to the specified channel ID. (optional)
  *
  * @param channelId the channel ID
  * @returns {TokenBuilder} itself
@@ -147,7 +167,7 @@ TokenBuilder.prototype.forChannel = function(channelId) {
 };
 
 /**
- * Limit the token to the specified channel alias (optional).
+ * Limit the token to the specified channel alias. (optional)
  *
  * @param channelAlias the channel alias
  * @returns {TokenBuilder} itself
@@ -163,7 +183,7 @@ TokenBuilder.prototype.forChannelAlias = function(channelAlias) {
 };
 
 /**
- * Apply the tag to the stream when it is setup (optional).
+ * Apply the tag to the stream when it is setup. (optional)
  *
  * @param tag the tag
  * @returns {TokenBuilder} itself

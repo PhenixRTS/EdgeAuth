@@ -25,6 +25,7 @@ program
   .option('-e, --expiresAt <timestamp>', 'Token expires at timestamp measured in milliseconds since UNIX epoch')
   .option('-a, --authenticationOnly', 'Token can be used for authentication only')
   .option('-s, --streamingOnly', 'Token can be used for streaming only')
+  .option('-b, --capabilities <capabilities>', '[STREAMING] Comma separated list of capabilities, e.g. for publishing')
   .option('-o, --originStreamId <originStreamId>', '[STREAMING] Token is limited to the given origin stream')
   .option('-c, --channel <channelId>', '[STREAMING] Token is limited to the given channel')
   .option('-i, --channelAlias <channelAlias>', '[STREAMING] Token is limited to the given channel alias')
@@ -48,6 +49,10 @@ if (program.authenticationOnly) {
 
 if (program.streamingOnly) {
   tokenBuilder.forStreamingOnly();
+}
+
+if (program.capabilities) {
+  program.capabilities.split(',').forEach((capability) => tokenBuilder.withCapability(capability));
 }
 
 if (program.originStreamId) {

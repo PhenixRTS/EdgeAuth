@@ -31,9 +31,11 @@ public final class TokenBuilder {
   private static final String FIELD_ORIGIN_STREAM_ID = "originStreamId";
   private static final String FIELD_SUBSCRIBER_TAG = "subscribeTag";
   private static final String FIELD_APPLY_TAGS = "applyTags";
+  private static final String FIELD_CAPABILITIES = "capabilities";
   private String applicationId;
   private String secret;
   private final JsonObjectBuilder tokenBuilder;
+  private JsonArrayBuilder capabilitiesBuilder;
   private JsonArrayBuilder tagBuilder;
 
   /**
@@ -73,6 +75,27 @@ public final class TokenBuilder {
     }
 
     this.secret = secret;
+
+    return this;
+  }
+
+  /**
+   * Set a capability for the token, e.g. to publish a stream. (optional)
+   *
+   * @param capability a valid capability
+   * @return itself
+   */
+  @Contract("null -> fail, _ -> this")
+  public TokenBuilder withCapability(String capability) {
+    if (capability == null) {
+      throw new RuntimeException("Capability must not be null");
+    }
+
+    if (capabilitiesBuilder == null) {
+      this.capabilitiesBuilder = Json.createArrayBuilder();
+    }
+
+    this.capabilitiesBuilder.add(capability);
 
     return this;
   }
@@ -133,7 +156,7 @@ public final class TokenBuilder {
   }
 
   /**
-   * Limit the token to the specified origin stream ID (optional).
+   * Limit the token to the specified origin stream ID. (optional)
    *
    * @param originStreamId the origin stream ID
    * @return itself
@@ -150,7 +173,7 @@ public final class TokenBuilder {
   }
 
   /**
-   * Limit the token to the specified channel ID (optional).
+   * Limit the token to the specified channel ID. (optional)
    *
    * @param channelId the channel ID
    * @return itself
@@ -167,7 +190,7 @@ public final class TokenBuilder {
   }
 
   /**
-   * Limit the token to the specified channel alias (optional).
+   * Limit the token to the specified channel alias. (optional)
    *
    * @param channelAlias the channel alias
    * @return itself
@@ -184,7 +207,7 @@ public final class TokenBuilder {
   }
 
   /**
-   * Apply the tag to the stream when it is setup (optional).
+   * Apply the tag to the stream when it is setup. (optional)
    *
    * @param tag the tag
    * @return itself
@@ -197,7 +220,6 @@ public final class TokenBuilder {
 
     if (tagBuilder == null) {
       this.tagBuilder = Json.createArrayBuilder();
-      this.tokenBuilder.add(FIELD_APPLY_TAGS, this.tagBuilder);
     }
 
     this.tagBuilder.add(tag);
@@ -212,6 +234,14 @@ public final class TokenBuilder {
    */
   public String build() {
     final DigestTokens digestTokens = new DigestTokens();
+
+    if (capabilitiesBuilder != null) {
+      this.tokenBuilder.add(FIELD_CAPABILITIES, this.capabilitiesBuilder);
+    }
+
+    if (tagBuilder != null) {
+      this.tokenBuilder.add(FIELD_APPLY_TAGS, this.tagBuilder);
+    }
 
     return digestTokens.signAndEncode(this.applicationId, this.secret, this.tokenBuilder.build());
   }

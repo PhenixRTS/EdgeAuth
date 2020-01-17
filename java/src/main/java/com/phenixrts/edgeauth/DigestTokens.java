@@ -23,13 +23,14 @@ import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.util.Base64;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 import javax.json.JsonValue;
+import javax.json.stream.JsonParsingException;
+import javax.xml.bind.DatatypeConverter;
 
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -133,7 +134,7 @@ public final class DigestTokens {
     final byte[] decodedAsBytes;
 
     try {
-      decodedAsBytes = Base64.getDecoder().decode(encodedDigestToken);
+      decodedAsBytes = DatatypeConverter.parseBase64Binary(encodedDigestToken);
     } catch (IllegalArgumentException e) {
       return new VerifyAndDecodeResult(ECode.BAD_TOKEN);
     }
@@ -141,8 +142,12 @@ public final class DigestTokens {
     final String decodedAsString = new String(decodedAsBytes);
     final JsonObject info;
 
-    try (JsonReader reader = Json.createReader(new StringReader(decodedAsString))) {
-      info = reader.readObject();
+    try {
+      try (JsonReader reader = Json.createReader(new StringReader(decodedAsString))) {
+        info = reader.readObject();
+      }
+    } catch (JsonParsingException e) {
+      return new VerifyAndDecodeResult(ECode.BAD_TOKEN);
     }
 
     final String[] stringFields = {FIELD_APPLICATION_ID, FIELD_DIGEST, FIELD_TOKEN};
@@ -242,7 +247,8 @@ public final class DigestTokens {
       throw new RuntimeException(e);
     }
 
-    final String encodedDigestToken = Base64.getEncoder().encodeToString(decodedDigestTokenAsString.getBytes(StandardCharsets.UTF_8));
+    final byte[] decodedDigestTokenAsBytes = decodedDigestTokenAsString.getBytes(StandardCharsets.UTF_8);
+    final String encodedDigestToken = DatatypeConverter.printBase64Binary(decodedDigestTokenAsBytes);
 
     return DIGEST_TOKEN_PREFIX + encodedDigestToken;
   }
@@ -256,7 +262,6 @@ public final class DigestTokens {
     mac.init(keySpec);
 
     final byte[] digestAsBytes = mac.doFinal(token.getBytes(StandardCharsets.UTF_8));
-
-    return Base64.getEncoder().encodeToString(digestAsBytes);
+    return DatatypeConverter.printBase64Binary(digestAsBytes);
   }
 }
