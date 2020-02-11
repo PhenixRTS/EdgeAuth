@@ -184,9 +184,7 @@ public final class TokenBuilder {
       throw new RuntimeException("Channel ID must not be null");
     }
 
-    this.tokenBuilder.add(FIELD_SUBSCRIBER_TAG, "channelId:" + channelId);
-
-    return this;
+    return this.forTag("channelId:" + channelId);
   }
 
   /**
@@ -201,7 +199,22 @@ public final class TokenBuilder {
       throw new RuntimeException("Channel alias must not be null");
     }
 
-    this.tokenBuilder.add(FIELD_SUBSCRIBER_TAG, "channelAlias:" + channelAlias);
+    return this.forTag("channelAlias:" + channelAlias);
+  }
+
+  /**
+   * Limit the token to the specified tag on the origin stream. (optional)
+   *
+   * @param tag the tag required on the origin stream
+   * @return itself
+   */
+  @Contract("null -> fail, _ -> this")
+  public TokenBuilder forTag(String tag) {
+    if (tag == null) {
+      throw new RuntimeException("Tag must not be null");
+    }
+
+    this.tokenBuilder.add(FIELD_SUBSCRIBER_TAG, tag);
 
     return this;
   }
@@ -209,7 +222,7 @@ public final class TokenBuilder {
   /**
    * Apply the tag to the stream when it is setup. (optional)
    *
-   * @param tag the tag
+   * @param tag the tag added to the new stream
    * @return itself
    */
   @Contract("null -> fail, _ -> this")

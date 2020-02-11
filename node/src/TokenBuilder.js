@@ -161,9 +161,7 @@ TokenBuilder.prototype.forChannel = function(channelId) {
     throw new Error('Channel ID must be a string');
   }
 
-  this.token.subscribeTag = 'channelId:' + channelId;
-
-  return this;
+  return this.forTag('channelId:' + channelId);
 };
 
 /**
@@ -177,7 +175,21 @@ TokenBuilder.prototype.forChannelAlias = function(channelAlias) {
     throw new Error('Channel alias must be a string');
   }
 
-  this.token.subscribeTag = 'channelAlias:' + channelAlias;
+  return this.forTag('channelAlias:' + channelAlias);
+};
+
+/**
+ * Limit the token to the specified tag on the origin stream. (optional)
+ *
+ * @param tag the tag required on the origin stream
+ * @returns {TokenBuilder} itself
+ */
+TokenBuilder.prototype.forTag = function(tag) {
+  if (typeof tag !== 'string') {
+    throw new Error('Tag must be a string');
+  }
+
+  this.token.subscribeTag = tag;
 
   return this;
 };
@@ -185,7 +197,7 @@ TokenBuilder.prototype.forChannelAlias = function(channelAlias) {
 /**
  * Apply the tag to the stream when it is setup. (optional)
  *
- * @param tag the tag
+ * @param tag the tag added to the new stream
  * @returns {TokenBuilder} itself
  */
 TokenBuilder.prototype.applyTag = function(tag) {
