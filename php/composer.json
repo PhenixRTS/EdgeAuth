@@ -1,0 +1,35 @@
+{
+    "name": "phenixrts/edgeauth",
+    "version": "1.0.0",
+    "type": "library",
+    "license": "Apache-2.0",
+    "homepage": "https://github.com/PhenixRTS/EdgeAuth",
+    "description": "Easily generate secure digest tokens to use with the Phenix platform",
+    "keywords": ["edge-authentication", "token-authentication", "phenix", "real-time", "video", "streaming-video"],
+    "authors": [
+        {
+            "name": "Phenix Real Time Systems",
+            "homepage": "https://www.phenixrts.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "ext-json": "*",
+        "vanilla/garden-cli": "^2.2"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8.5"
+    },
+    "autoload": {
+        "psr-4": {"EdgeAuth\\": "src/"}
+    },
+    "autoload-dev": {
+        "psr-4": {"EdgeAuth\\Tests\\": "tests/" }
+    },
+    "scripts": {
+        "unit": "phpunit -c ./test/phpunit.xml"
+    },
+    "bin": [
+        "bin/edgeauth"
+    ]
+}

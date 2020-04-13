@@ -1,0 +1,12 @@
+# PhpStorm
+/.idea
+
+# Composer
+/vendor
+/composer.lock
+
+# Apache Ant
+/.ant_targets
+
+# PHPUnit
+.phpunit.result.cache
