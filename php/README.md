@@ -52,41 +52,35 @@ Create a token for channel access:
 ./bin/edgeauth --applicationId "my-application-id" --secret "my-secret" --expiresInSeconds 3600 --channel "us-northeast#my-application-id#my-channel.1345"
 ```
 
-## To include Phenix EdgeAuth in your project
+## To include Phenix EdgeAuth in your PHP project
 
-Sample composer.json:
+Add these entries to your composer.json:
 
 ```json
 {
-    "name": "you/edgeauthexample",
-    "type": "project",
-    "authors": [
-        {
-            "name": "PHP Developer",
-            "email": "php.developer@somemail.com"
-        }
-    ],
+    .
+    .
+    .
     "require": {
-        "phenixrts/edgeauth": "@1.0.*"
-    },
-    "autoload": {
-        "psr-4": {"EdgeAuthExample\\": "src/"}
-    },
-    "repositories": [
-        {
-            "type": "package",
-            "package": {
-                "name": "phenixrts/edgeauth",
-                "version": "1.0.0",
-                "dist": {
-                    "url": "https://github.com/PhenixRTS/EdgeAuth/releases/download/php%401.0.0/php@1.0.0.zip",
-                    "type": "zip"
-                },
-                "autoload": {
-                    "psr-4": ["src/"]
-                }
-            }
+        "phenixrts/edgeauth": "1.0.1"
+    }
+    .
+    .
+    .
+    "repositories": [{
+        "type": "package",
+        "package": {
+          "name": "phenixrts/edgeauth",
+          "type": "zip",
+          "version": "1.0.1",
+          "dist": {
+            "type": "zip",
+            "url": "https://github.com/PhenixRTS/EdgeAuth/releases/download/php%401.0.1/php@1.0.1.zip"
+          }
         }
-    ]
+    }]
+    .
+    .
+    .
 }
 ```
