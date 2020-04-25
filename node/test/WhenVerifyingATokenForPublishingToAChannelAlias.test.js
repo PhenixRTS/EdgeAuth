@@ -16,7 +16,7 @@
 const TokenBuilder = require('../src/TokenBuilder');
 const DigestTokens = require('../src/DigestTokens');
 
-describe('When verifying a token for a channel', () => {
+describe('When verifying a token for publishing', () => {
   var token;
 
   beforeEach(() => {
@@ -25,12 +25,12 @@ describe('When verifying a token for a channel', () => {
       .withSecret(('my-secret'))
       .expiresAt(new Date(1000))
       .forChannelAlias('my-channel')
-      .forStreamingOnly()
+      .forPublishingOnly()
       .build();
   });
 
   test('The token matches the expected value', () => {
-    expect(token).toBe('DIGEST:eyJhcHBsaWNhdGlvbklkIjoibXktYXBwbGljYXRpb24taWQiLCJkaWdlc3QiOiJPMk90R1ZBMlErTGlhRkdjSjZ0cnlXZWE4L2l2dWFQR2gzcFJpcVd3ZlJPVWdBSSs0dFdaYXdBc011Y2MyMHNRTjZpaGZtVGVDNFVubXVoWko5aHBxUT09IiwidG9rZW4iOiJ7XCJleHBpcmVzXCI6MTAwMCxcInJlcXVpcmVkVGFnXCI6XCJjaGFubmVsQWxpYXM6bXktY2hhbm5lbFwiLFwidHlwZVwiOlwic3RyZWFtXCJ9In0=');
+    expect(token).toBe('DIGEST:eyJhcHBsaWNhdGlvbklkIjoibXktYXBwbGljYXRpb24taWQiLCJkaWdlc3QiOiJIREJPRzdiOFRuV0ZoNVMrR0Y5Z1lWQkNrM1J4WlhXNWh6UUN0bk9raXZLNlY0K1AxcDVKcHJ2TTNIVElyTUFBclUxMkY5bkltNGRvRm5TWXVjSzloUT09IiwidG9rZW4iOiJ7XCJleHBpcmVzXCI6MTAwMCxcInJlcXVpcmVkVGFnXCI6XCJjaGFubmVsQWxpYXM6bXktY2hhbm5lbFwiLFwidHlwZVwiOlwicHVibGlzaFwifSJ9');
   });
 
   test('The token successfully verifies with the correct secret', () => {
@@ -39,6 +39,7 @@ describe('When verifying a token for a channel', () => {
     expect(result.verified).toBe(true);
     expect(result.code).toBe('verified');
     expect(result.value).not.toBe(undefined);
+    expect(result.value.type).toBe('publish');
     expect(result.value.requiredTag).toBe('channelAlias:my-channel');
   });
 

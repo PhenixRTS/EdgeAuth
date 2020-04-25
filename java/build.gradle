@@ -7,7 +7,7 @@ plugins {
 }
 
 group 'com.phenixrts.edgeauth'
-version '1.1-SNAPSHOT'
+version '1.3-SNAPSHOT'
 
 sourceCompatibility = 1.7
 
@@ -109,8 +109,8 @@ publishing {
             def releasesRepositoryUrl = 'https://oss.sonatype.org/service/local/staging/deploy/maven2'
             url = version.endsWith('SNAPSHOT') ? snapshotsRepositoryUrl : releasesRepositoryUrl
             credentials {
-                username repositoryUsername
-                password repositoryPassword
+                username project.findProperty("sonatype.username") ?: System.getenv("USERNAME")
+                password project.findProperty("sonatype.password") ?: System.getenv("PASSWORD")
             }
         }
     }

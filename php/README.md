@@ -62,7 +62,7 @@ Add these entries to your composer.json:
     .
     .
     "require": {
-        "phenixrts/edgeauth": "1.0.1"
+        "phenixrts/edgeauth": "1.2.0"
     }
     .
     .
@@ -72,10 +72,10 @@ Add these entries to your composer.json:
         "package": {
           "name": "phenixrts/edgeauth",
           "type": "zip",
-          "version": "1.0.1",
+          "version": "1.2.0",
           "dist": {
             "type": "zip",
-            "url": "https://github.com/PhenixRTS/EdgeAuth/releases/download/php%401.0.1/php@1.0.1.zip"
+            "url": "https://github.com/PhenixRTS/EdgeAuth/releases/download/php%401.2.0/php@1.2.0.zip"
           }
         }
     }]

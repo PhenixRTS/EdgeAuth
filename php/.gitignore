@@ -7,3 +7,5 @@
 
 # PHPUnit
 .phpunit.result.cache
+
+build/

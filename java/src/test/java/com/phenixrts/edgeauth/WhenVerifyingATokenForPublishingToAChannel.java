@@ -6,7 +6,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
-public class WhenVerifyingATokenForPublishingWithCapabilities {
+public class WhenVerifyingATokenForPublishingToAChannel {
   private String token;
 
   @BeforeTest
@@ -15,15 +15,14 @@ public class WhenVerifyingATokenForPublishingWithCapabilities {
         .withApplicationId("my-application-id")
         .withSecret("my-secret")
         .expiresAt(new Date(1000L))
+        .forChannel("us-northeast#my-application-id#my-channel.134566")
         .forPublishingOnly()
-        .withCapability("multi-bitrate")
-        .withCapability("streaming")
         .build();
   }
 
   @Test
   void theTokenMatchesTheExpectedValue() {
-    Assert.assertEquals(token, "DIGEST:eyJhcHBsaWNhdGlvbklkIjoibXktYXBwbGljYXRpb24taWQiLCJkaWdlc3QiOiJFKytBK3EwWGhGQ09LT011RnZqcnRIOVNyeHpwZ0Q1VVZYb1B6Q1VPaGNLU3pHTGRQZmsyRVYzVkZOOWRyM2tBVGZtSWRUeCtSTlFodjJ3aVJGbUM1Zz09IiwidG9rZW4iOiJ7XCJleHBpcmVzXCI6MTAwMCxcInR5cGVcIjpcInB1Ymxpc2hcIixcImNhcGFiaWxpdGllc1wiOltcIm11bHRpLWJpdHJhdGVcIixcInN0cmVhbWluZ1wiXX0ifQ==");
+    Assert.assertEquals(token, "DIGEST:eyJhcHBsaWNhdGlvbklkIjoibXktYXBwbGljYXRpb24taWQiLCJkaWdlc3QiOiJVZ3hjTDVVMlAvZDVtTXI4N3NzM3M5ZDdNNHo1elNZRGZrN0duL1BHS1d4S3NRS2t0c2pkN0Y5QTlRRHVQNnRSaTMzTG00TlpDVTZvSDFjbzFIa2Nmdz09IiwidG9rZW4iOiJ7XCJleHBpcmVzXCI6MTAwMCxcInJlcXVpcmVkVGFnXCI6XCJjaGFubmVsSWQ6dXMtbm9ydGhlYXN0I215LWFwcGxpY2F0aW9uLWlkI215LWNoYW5uZWwuMTM0NTY2XCIsXCJ0eXBlXCI6XCJwdWJsaXNoXCJ9In0=");
   }
 
   @Test
@@ -34,9 +33,7 @@ public class WhenVerifyingATokenForPublishingWithCapabilities {
     Assert.assertEquals(result.getCode(), ECode.VERIFIED);
     Assert.assertNotNull(result.getValue());
     Assert.assertEquals(result.getValue().getString("type"), "publish");
-    Assert.assertEquals(result.getValue().getJsonArray("capabilities").size(), 2);
-    Assert.assertEquals(result.getValue().getJsonArray("capabilities").getString(0), "multi-bitrate");
-    Assert.assertEquals(result.getValue().getJsonArray("capabilities").getString(1), "streaming");
+    Assert.assertEquals(result.getValue().getString("requiredTag"), "channelId:us-northeast#my-application-id#my-channel.134566");
   }
 
   @Test

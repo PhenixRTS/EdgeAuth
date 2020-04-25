@@ -135,6 +135,17 @@ TokenBuilder.prototype.forStreamingOnly = function() {
 };
 
 /**
+ * Limit the token to publishing only. (optional)
+ *
+ * @returns {TokenBuilder} itself
+ */
+TokenBuilder.prototype.forPublishingOnly = function() {
+  this.token.type = 'publish';
+
+  return this;
+};
+
+/**
  * Limit the token to the specified origin stream ID. (optional)
  *
  * @param originStreamId the origin stream ID
@@ -189,7 +200,7 @@ TokenBuilder.prototype.forTag = function(tag) {
     throw new Error('Tag must be a string');
   }
 
-  this.token.subscribeTag = tag;
+  this.token.requiredTag = tag;
 
   return this;
 };

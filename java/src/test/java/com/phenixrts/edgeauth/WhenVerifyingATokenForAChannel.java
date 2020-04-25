@@ -22,7 +22,7 @@ public class WhenVerifyingATokenForAChannel {
 
   @Test
   void theTokenMatchesTheExpectedValue() {
-    Assert.assertEquals(token, "DIGEST:eyJhcHBsaWNhdGlvbklkIjoibXktYXBwbGljYXRpb24taWQiLCJkaWdlc3QiOiIzSHByd0VienJEOWp1ODhuSkIzZklhdXNCd2tQQUFIdUV3aHZUNWYzRGJMaUpGcHJmeGFBVHd0ODdwcDlqNkNWSTlBQWZVTTVLY3NVVmd5K1c0MHFMdz09IiwidG9rZW4iOiJ7XCJleHBpcmVzXCI6MTAwMCxcInN1YnNjcmliZVRhZ1wiOlwiY2hhbm5lbElkOnVzLW5vcnRoZWFzdCNteS1hcHBsaWNhdGlvbi1pZCNteS1jaGFubmVsLjEzNDU2NlwiLFwidHlwZVwiOlwic3RyZWFtXCJ9In0=");
+    Assert.assertEquals(token, "DIGEST:eyJhcHBsaWNhdGlvbklkIjoibXktYXBwbGljYXRpb24taWQiLCJkaWdlc3QiOiJZNGM3Tmp6eDVhalkzLzRWK3pwTVliNTBBU1ZCUXc0NlAvS2dwc3JrTnpDdFAzZWM5NzVzblorN3lJNzZiM0wrTmNtb2FoL3hOTUhQZ00vNEExaDI4UT09IiwidG9rZW4iOiJ7XCJleHBpcmVzXCI6MTAwMCxcInJlcXVpcmVkVGFnXCI6XCJjaGFubmVsSWQ6dXMtbm9ydGhlYXN0I215LWFwcGxpY2F0aW9uLWlkI215LWNoYW5uZWwuMTM0NTY2XCIsXCJ0eXBlXCI6XCJzdHJlYW1cIn0ifQ==");
   }
 
   @Test
@@ -32,7 +32,7 @@ public class WhenVerifyingATokenForAChannel {
     Assert.assertTrue(result.isVerified());
     Assert.assertEquals(result.getCode(), ECode.VERIFIED);
     Assert.assertNotNull(result.getValue());
-    Assert.assertEquals(result.getValue().getString("subscribeTag"), "channelId:us-northeast#my-application-id#my-channel.134566");
+    Assert.assertEquals(result.getValue().getString("requiredTag"), "channelId:us-northeast#my-application-id#my-channel.134566");
   }
 
   @Test

@@ -22,7 +22,7 @@ public class WhenVerifyingATokenForAChannelAlias {
 
   @Test
   void theTokenMatchesTheExpectedValue() {
-    Assert.assertEquals(token, "DIGEST:eyJhcHBsaWNhdGlvbklkIjoibXktYXBwbGljYXRpb24taWQiLCJkaWdlc3QiOiJNV21IVXBUL21qM3ZleURGZGt2ODdKVnpnRU5DeUR4eGovVkx5aXZnVWsvcUJvYjZmV1c1UGphbVJCVmlONUo4NjYzbENzSjNxZkZZZ2ZNS1JlazJoQT09IiwidG9rZW4iOiJ7XCJleHBpcmVzXCI6MTAwMCxcInN1YnNjcmliZVRhZ1wiOlwiY2hhbm5lbEFsaWFzOm15LWNoYW5uZWxcIixcInR5cGVcIjpcInN0cmVhbVwifSJ9");
+    Assert.assertEquals(token, "DIGEST:eyJhcHBsaWNhdGlvbklkIjoibXktYXBwbGljYXRpb24taWQiLCJkaWdlc3QiOiJPMk90R1ZBMlErTGlhRkdjSjZ0cnlXZWE4L2l2dWFQR2gzcFJpcVd3ZlJPVWdBSSs0dFdaYXdBc011Y2MyMHNRTjZpaGZtVGVDNFVubXVoWko5aHBxUT09IiwidG9rZW4iOiJ7XCJleHBpcmVzXCI6MTAwMCxcInJlcXVpcmVkVGFnXCI6XCJjaGFubmVsQWxpYXM6bXktY2hhbm5lbFwiLFwidHlwZVwiOlwic3RyZWFtXCJ9In0=");
   }
 
   @Test
@@ -32,7 +32,7 @@ public class WhenVerifyingATokenForAChannelAlias {
     Assert.assertTrue(result.isVerified());
     Assert.assertEquals(result.getCode(), ECode.VERIFIED);
     Assert.assertNotNull(result.getValue());
-    Assert.assertEquals(result.getValue().getString("subscribeTag"), "channelAlias:my-channel");
+    Assert.assertEquals(result.getValue().getString("requiredTag"), "channelAlias:my-channel");
   }
 
   @Test

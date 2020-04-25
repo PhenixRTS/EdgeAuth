@@ -15,13 +15,13 @@ public class WhenVerifyingATokenForPublishing {
         .withApplicationId("my-application-id")
         .withSecret("my-secret")
         .expiresAt(new Date(1000L))
-        .forStreamingOnly()
+        .forPublishingOnly()
         .build();
   }
 
   @Test
   void theTokenMatchesTheExpectedValue() {
-    Assert.assertEquals(token, "DIGEST:eyJhcHBsaWNhdGlvbklkIjoibXktYXBwbGljYXRpb24taWQiLCJkaWdlc3QiOiI4WHEwMnNrZkM2R24vWVdtMExMalFOajVZTzJqR0RBYXAvc3NqUE1mdWgyamtrWXZpS1FGTkQwRm9DU0RxVXg5U2wrSTArYWpKMHRsQWhUdTN4dTdHQT09IiwidG9rZW4iOiJ7XCJleHBpcmVzXCI6MTAwMCxcInR5cGVcIjpcInN0cmVhbVwifSJ9");
+    Assert.assertEquals(token, "DIGEST:eyJhcHBsaWNhdGlvbklkIjoibXktYXBwbGljYXRpb24taWQiLCJkaWdlc3QiOiJrVElBcDh4ZUlqRXBxU2p0R3Zha3JOR2FFWnl5S1hMdmRMdmpBTHpJYkhYQmtqVXg2eU9hOHNmTGVoMFJydnNHaDJFbHF5OE5MMVBFVG51QjdQR3Z6dz09IiwidG9rZW4iOiJ7XCJleHBpcmVzXCI6MTAwMCxcInR5cGVcIjpcInB1Ymxpc2hcIn0ifQ==");
   }
 
   @Test
@@ -31,6 +31,7 @@ public class WhenVerifyingATokenForPublishing {
     Assert.assertTrue(result.isVerified());
     Assert.assertEquals(result.getCode(), ECode.VERIFIED);
     Assert.assertNotNull(result.getValue());
+    Assert.assertEquals(result.getValue().getString("type"), "publish");
   }
 
   @Test

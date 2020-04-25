@@ -31,7 +31,7 @@ describe('When verifying a token for a channel', () => {
   });
 
   test('The token matches the expected value', () => {
-    expect(token).toBe('DIGEST:eyJhcHBsaWNhdGlvbklkIjoibXktYXBwbGljYXRpb24taWQiLCJkaWdlc3QiOiJyU0NmTzlmTDlLc3ZnZVBvQVpBRDBDZG1Xc1hrNDhybm4zK2VlZXlZVXFxQUU3aTBGbnBYbFJjMDhOa3BuYmdtb3hDWWpKenNDR0Yra3kyWWR5NWprZz09IiwidG9rZW4iOiJ7XCJleHBpcmVzXCI6MTAwMCxcInN1YnNjcmliZVRhZ1wiOlwiY2hhbm5lbEFsaWFzOm15LWNoYW5uZWxcIixcInR5cGVcIjpcInN0cmVhbVwiLFwiYXBwbHlUYWdzXCI6W1wiY3VzdG9tZXIxXCJdfSJ9');
+    expect(token).toBe('DIGEST:eyJhcHBsaWNhdGlvbklkIjoibXktYXBwbGljYXRpb24taWQiLCJkaWdlc3QiOiJMU0VnS2dGTy9aRUdxdEFLazVZb0F6cFJuTnQ4enhwUjNsdEJ3cWtOR3E1VWdjWWZpcnZKTDk3NHhpangyNS9XbHpqaUg1dk5ZMHdaYklFSkE2MzJqdz09IiwidG9rZW4iOiJ7XCJleHBpcmVzXCI6MTAwMCxcInJlcXVpcmVkVGFnXCI6XCJjaGFubmVsQWxpYXM6bXktY2hhbm5lbFwiLFwidHlwZVwiOlwic3RyZWFtXCIsXCJhcHBseVRhZ3NcIjpbXCJjdXN0b21lcjFcIl19In0=');
   });
 
   test('The token successfully verifies with the correct secret', () => {
@@ -40,7 +40,7 @@ describe('When verifying a token for a channel', () => {
     expect(result.verified).toBe(true);
     expect(result.code).toBe('verified');
     expect(result.value).not.toBe(undefined);
-    expect(result.value.subscribeTag).toBe('channelAlias:my-channel');
+    expect(result.value.requiredTag).toBe('channelAlias:my-channel');
     expect(result.value.applyTags).toStrictEqual(['customer1']);
   });
 

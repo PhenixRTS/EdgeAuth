@@ -30,7 +30,7 @@ describe('When verifying a token for a channel', () => {
   });
 
   test('The token matches the expected value', () => {
-    expect(token).toBe('DIGEST:eyJhcHBsaWNhdGlvbklkIjoibXktYXBwbGljYXRpb24taWQiLCJkaWdlc3QiOiIzSHByd0VienJEOWp1ODhuSkIzZklhdXNCd2tQQUFIdUV3aHZUNWYzRGJMaUpGcHJmeGFBVHd0ODdwcDlqNkNWSTlBQWZVTTVLY3NVVmd5K1c0MHFMdz09IiwidG9rZW4iOiJ7XCJleHBpcmVzXCI6MTAwMCxcInN1YnNjcmliZVRhZ1wiOlwiY2hhbm5lbElkOnVzLW5vcnRoZWFzdCNteS1hcHBsaWNhdGlvbi1pZCNteS1jaGFubmVsLjEzNDU2NlwiLFwidHlwZVwiOlwic3RyZWFtXCJ9In0=');
+    expect(token).toBe('DIGEST:eyJhcHBsaWNhdGlvbklkIjoibXktYXBwbGljYXRpb24taWQiLCJkaWdlc3QiOiJZNGM3Tmp6eDVhalkzLzRWK3pwTVliNTBBU1ZCUXc0NlAvS2dwc3JrTnpDdFAzZWM5NzVzblorN3lJNzZiM0wrTmNtb2FoL3hOTUhQZ00vNEExaDI4UT09IiwidG9rZW4iOiJ7XCJleHBpcmVzXCI6MTAwMCxcInJlcXVpcmVkVGFnXCI6XCJjaGFubmVsSWQ6dXMtbm9ydGhlYXN0I215LWFwcGxpY2F0aW9uLWlkI215LWNoYW5uZWwuMTM0NTY2XCIsXCJ0eXBlXCI6XCJzdHJlYW1cIn0ifQ==');
   });
 
   test('The token successfully verifies with the correct secret', () => {
@@ -39,7 +39,7 @@ describe('When verifying a token for a channel', () => {
     expect(result.verified).toBe(true);
     expect(result.code).toBe('verified');
     expect(result.value).not.toBe(undefined);
-    expect(result.value.subscribeTag).toBe('channelId:us-northeast#my-application-id#my-channel.134566');
+    expect(result.value.requiredTag).toBe('channelId:us-northeast#my-application-id#my-channel.134566');
   });
 
   test('The token fails to verify with a bad secret', () => {

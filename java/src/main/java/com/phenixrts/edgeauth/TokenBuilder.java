@@ -29,7 +29,7 @@ import org.jetbrains.annotations.Contract;
 public final class TokenBuilder {
   private static final String FIELD_TYPE = "type";
   private static final String FIELD_ORIGIN_STREAM_ID = "originStreamId";
-  private static final String FIELD_SUBSCRIBER_TAG = "subscribeTag";
+  private static final String FIELD_REQUIRED_TAG = "requiredTag";
   private static final String FIELD_APPLY_TAGS = "applyTags";
   private static final String FIELD_CAPABILITIES = "capabilities";
   private String applicationId;
@@ -156,6 +156,18 @@ public final class TokenBuilder {
   }
 
   /**
+   * Limit the token to publishing only. (optional)
+   *
+   * @return itself
+   */
+  @Contract(" -> this")
+  public TokenBuilder forPublishingOnly() {
+    this.tokenBuilder.add(FIELD_TYPE, "publish");
+
+    return this;
+  }
+
+  /**
    * Limit the token to the specified origin stream ID. (optional)
    *
    * @param originStreamId the origin stream ID
@@ -214,7 +226,7 @@ public final class TokenBuilder {
       throw new RuntimeException("Tag must not be null");
     }
 
-    this.tokenBuilder.add(FIELD_SUBSCRIBER_TAG, tag);
+    this.tokenBuilder.add(FIELD_REQUIRED_TAG, tag);
 
     return this;
   }
@@ -231,7 +243,7 @@ public final class TokenBuilder {
       throw new RuntimeException("Tag must not be null");
     }
 
-    if (tagBuilder == null) {
+    if (this.tagBuilder == null) {
       this.tagBuilder = Json.createArrayBuilder();
     }
 
@@ -248,11 +260,11 @@ public final class TokenBuilder {
   public String build() {
     final DigestTokens digestTokens = new DigestTokens();
 
-    if (capabilitiesBuilder != null) {
+    if (this.capabilitiesBuilder != null) {
       this.tokenBuilder.add(FIELD_CAPABILITIES, this.capabilitiesBuilder);
     }
 
-    if (tagBuilder != null) {
+    if (this.tagBuilder != null) {
       this.tokenBuilder.add(FIELD_APPLY_TAGS, this.tagBuilder);
     }
 

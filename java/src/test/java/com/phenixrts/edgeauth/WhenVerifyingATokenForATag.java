@@ -22,7 +22,7 @@ public class WhenVerifyingATokenForATag {
 
   @Test
   void theTokenMatchesTheExpectedValue() {
-    Assert.assertEquals(token, "DIGEST:eyJhcHBsaWNhdGlvbklkIjoibXktYXBwbGljYXRpb24taWQiLCJkaWdlc3QiOiI4L2IzRjFDUlVHNTFvR1p4VitsRkcwemlMaGszclZjek1zVGFUMHBIakNBSE1nU0ltQmh2a2NFS09Fc1ErcXgzOHlLRmNFaWJMZUsvdEtrWTBGaFJtdz09IiwidG9rZW4iOiJ7XCJleHBpcmVzXCI6MTAwMCxcInN1YnNjcmliZVRhZ1wiOlwibXktdGFnPWF3ZXNvbWVcIixcInR5cGVcIjpcInN0cmVhbVwifSJ9");
+    Assert.assertEquals(token, "DIGEST:eyJhcHBsaWNhdGlvbklkIjoibXktYXBwbGljYXRpb24taWQiLCJkaWdlc3QiOiJGUGRrTFFyVGlsS0toRDduc2QzeDZoNWV1aXVsaDVCYy9lNEtmQWY0THB5Qno4N2trK2lrQWN5ZUppcFk3alo4clpTN1N0bWw1aERMWEJIZXkrbmw2QT09IiwidG9rZW4iOiJ7XCJleHBpcmVzXCI6MTAwMCxcInJlcXVpcmVkVGFnXCI6XCJteS10YWc9YXdlc29tZVwiLFwidHlwZVwiOlwic3RyZWFtXCJ9In0=");
   }
 
   @Test
@@ -32,7 +32,7 @@ public class WhenVerifyingATokenForATag {
     Assert.assertTrue(result.isVerified());
     Assert.assertEquals(result.getCode(), ECode.VERIFIED);
     Assert.assertNotNull(result.getValue());
-    Assert.assertEquals(result.getValue().getString("subscribeTag"), "my-tag=awesome");
+    Assert.assertEquals(result.getValue().getString("requiredTag"), "my-tag=awesome");
   }
 
   @Test

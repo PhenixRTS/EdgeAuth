@@ -125,6 +125,16 @@ class TokenBuilder
     }
 
     /**
+     * Limit the token to streaming only. (optional)
+     * @return $this
+     */
+    function forPublishingOnly()
+    {
+        $this->token->type = 'publish';
+        return $this;
+    }
+
+    /**
      * Limit the token to the specified origin stream ID. (optional)
      * @param $originStreamId
      * @return $this
@@ -182,7 +192,7 @@ class TokenBuilder
             throw new \Exception('Tag must be a string');
         }
 
-        $this->token->subscribeTag = $tag;
+        $this->token->requiredTag = $tag;
         return $this;
     }
 

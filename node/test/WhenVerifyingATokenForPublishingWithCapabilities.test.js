@@ -24,14 +24,14 @@ describe('When verifying a token for publishing', () => {
       .withApplicationId('my-application-id')
       .withSecret(('my-secret'))
       .expiresAt(new Date(1000))
-      .forStreamingOnly()
+      .forPublishingOnly()
       .withCapability('multi-bitrate')
       .withCapability('streaming')
       .build();
   });
 
   test('The token matches the expected value', () => {
-    expect(token).toBe('DIGEST:eyJhcHBsaWNhdGlvbklkIjoibXktYXBwbGljYXRpb24taWQiLCJkaWdlc3QiOiJMQU5xV1d2TWZvMmNxMzM2cEZEZU11VTFHa25YWnhCdEpTNnc1dE9VRXdCK1pmaTA1dWFwaFowUmNpZGFhNmFaUm4rSHkzMUF1eDNqUFlubE9pTnowUT09IiwidG9rZW4iOiJ7XCJleHBpcmVzXCI6MTAwMCxcInR5cGVcIjpcInN0cmVhbVwiLFwiY2FwYWJpbGl0aWVzXCI6W1wibXVsdGktYml0cmF0ZVwiLFwic3RyZWFtaW5nXCJdfSJ9');
+    expect(token).toBe('DIGEST:eyJhcHBsaWNhdGlvbklkIjoibXktYXBwbGljYXRpb24taWQiLCJkaWdlc3QiOiJFKytBK3EwWGhGQ09LT011RnZqcnRIOVNyeHpwZ0Q1VVZYb1B6Q1VPaGNLU3pHTGRQZmsyRVYzVkZOOWRyM2tBVGZtSWRUeCtSTlFodjJ3aVJGbUM1Zz09IiwidG9rZW4iOiJ7XCJleHBpcmVzXCI6MTAwMCxcInR5cGVcIjpcInB1Ymxpc2hcIixcImNhcGFiaWxpdGllc1wiOltcIm11bHRpLWJpdHJhdGVcIixcInN0cmVhbWluZ1wiXX0ifQ==');
   });
 
   test('The token successfully verifies with the correct secret', () => {
@@ -40,6 +40,7 @@ describe('When verifying a token for publishing', () => {
     expect(result.verified).toBe(true);
     expect(result.code).toBe('verified');
     expect(result.value).not.toBe(undefined);
+    expect(result.value.type).toBe('publish');
     expect(result.value.capabilities).toStrictEqual(['multi-bitrate', 'streaming']);
   });
 

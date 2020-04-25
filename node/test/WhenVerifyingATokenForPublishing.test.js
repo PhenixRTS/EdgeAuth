@@ -24,12 +24,12 @@ describe('When verifying a token for publishing', () => {
       .withApplicationId('my-application-id')
       .withSecret(('my-secret'))
       .expiresAt(new Date(1000))
-      .forStreamingOnly()
+      .forPublishingOnly()
       .build();
   });
 
   test('The token matches the expected value', () => {
-    expect(token).toBe('DIGEST:eyJhcHBsaWNhdGlvbklkIjoibXktYXBwbGljYXRpb24taWQiLCJkaWdlc3QiOiI4WHEwMnNrZkM2R24vWVdtMExMalFOajVZTzJqR0RBYXAvc3NqUE1mdWgyamtrWXZpS1FGTkQwRm9DU0RxVXg5U2wrSTArYWpKMHRsQWhUdTN4dTdHQT09IiwidG9rZW4iOiJ7XCJleHBpcmVzXCI6MTAwMCxcInR5cGVcIjpcInN0cmVhbVwifSJ9');
+    expect(token).toBe('DIGEST:eyJhcHBsaWNhdGlvbklkIjoibXktYXBwbGljYXRpb24taWQiLCJkaWdlc3QiOiJrVElBcDh4ZUlqRXBxU2p0R3Zha3JOR2FFWnl5S1hMdmRMdmpBTHpJYkhYQmtqVXg2eU9hOHNmTGVoMFJydnNHaDJFbHF5OE5MMVBFVG51QjdQR3Z6dz09IiwidG9rZW4iOiJ7XCJleHBpcmVzXCI6MTAwMCxcInR5cGVcIjpcInB1Ymxpc2hcIn0ifQ==');
   });
 
   test('The token successfully verifies with the correct secret', () => {
@@ -38,6 +38,7 @@ describe('When verifying a token for publishing', () => {
     expect(result.verified).toBe(true);
     expect(result.code).toBe('verified');
     expect(result.value).not.toBe(undefined);
+    expect(result.value.type).toBe('publish');
   });
 
   test('The token fails to verify with a bad secret', () => {

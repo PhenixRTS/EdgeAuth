@@ -6,7 +6,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
-public class WhenVerifyingATokenForPublishingWithCapabilities {
+public class WhenVerifyingATokenForPublishingToAChannelAlias {
   private String token;
 
   @BeforeTest
@@ -15,15 +15,14 @@ public class WhenVerifyingATokenForPublishingWithCapabilities {
         .withApplicationId("my-application-id")
         .withSecret("my-secret")
         .expiresAt(new Date(1000L))
+        .forChannelAlias("my-channel")
         .forPublishingOnly()
-        .withCapability("multi-bitrate")
-        .withCapability("streaming")
         .build();
   }
 
   @Test
   void theTokenMatchesTheExpectedValue() {
-    Assert.assertEquals(token, "DIGEST:eyJhcHBsaWNhdGlvbklkIjoibXktYXBwbGljYXRpb24taWQiLCJkaWdlc3QiOiJFKytBK3EwWGhGQ09LT011RnZqcnRIOVNyeHpwZ0Q1VVZYb1B6Q1VPaGNLU3pHTGRQZmsyRVYzVkZOOWRyM2tBVGZtSWRUeCtSTlFodjJ3aVJGbUM1Zz09IiwidG9rZW4iOiJ7XCJleHBpcmVzXCI6MTAwMCxcInR5cGVcIjpcInB1Ymxpc2hcIixcImNhcGFiaWxpdGllc1wiOltcIm11bHRpLWJpdHJhdGVcIixcInN0cmVhbWluZ1wiXX0ifQ==");
+    Assert.assertEquals(token, "DIGEST:eyJhcHBsaWNhdGlvbklkIjoibXktYXBwbGljYXRpb24taWQiLCJkaWdlc3QiOiJIREJPRzdiOFRuV0ZoNVMrR0Y5Z1lWQkNrM1J4WlhXNWh6UUN0bk9raXZLNlY0K1AxcDVKcHJ2TTNIVElyTUFBclUxMkY5bkltNGRvRm5TWXVjSzloUT09IiwidG9rZW4iOiJ7XCJleHBpcmVzXCI6MTAwMCxcInJlcXVpcmVkVGFnXCI6XCJjaGFubmVsQWxpYXM6bXktY2hhbm5lbFwiLFwidHlwZVwiOlwicHVibGlzaFwifSJ9");
   }
 
   @Test
@@ -34,9 +33,7 @@ public class WhenVerifyingATokenForPublishingWithCapabilities {
     Assert.assertEquals(result.getCode(), ECode.VERIFIED);
     Assert.assertNotNull(result.getValue());
     Assert.assertEquals(result.getValue().getString("type"), "publish");
-    Assert.assertEquals(result.getValue().getJsonArray("capabilities").size(), 2);
-    Assert.assertEquals(result.getValue().getJsonArray("capabilities").getString(0), "multi-bitrate");
-    Assert.assertEquals(result.getValue().getJsonArray("capabilities").getString(1), "streaming");
+    Assert.assertEquals(result.getValue().getString("requiredTag"), "channelAlias:my-channel");
   }
 
   @Test

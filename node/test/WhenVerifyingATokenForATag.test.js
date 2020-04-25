@@ -30,7 +30,7 @@ describe('When verifying a token for a channel', () => {
   });
 
   test('The token matches the expected value', () => {
-    expect(token).toBe('DIGEST:eyJhcHBsaWNhdGlvbklkIjoibXktYXBwbGljYXRpb24taWQiLCJkaWdlc3QiOiI4L2IzRjFDUlVHNTFvR1p4VitsRkcwemlMaGszclZjek1zVGFUMHBIakNBSE1nU0ltQmh2a2NFS09Fc1ErcXgzOHlLRmNFaWJMZUsvdEtrWTBGaFJtdz09IiwidG9rZW4iOiJ7XCJleHBpcmVzXCI6MTAwMCxcInN1YnNjcmliZVRhZ1wiOlwibXktdGFnPWF3ZXNvbWVcIixcInR5cGVcIjpcInN0cmVhbVwifSJ9');
+    expect(token).toBe('DIGEST:eyJhcHBsaWNhdGlvbklkIjoibXktYXBwbGljYXRpb24taWQiLCJkaWdlc3QiOiJGUGRrTFFyVGlsS0toRDduc2QzeDZoNWV1aXVsaDVCYy9lNEtmQWY0THB5Qno4N2trK2lrQWN5ZUppcFk3alo4clpTN1N0bWw1aERMWEJIZXkrbmw2QT09IiwidG9rZW4iOiJ7XCJleHBpcmVzXCI6MTAwMCxcInJlcXVpcmVkVGFnXCI6XCJteS10YWc9YXdlc29tZVwiLFwidHlwZVwiOlwic3RyZWFtXCJ9In0=');
   });
 
   test('The token successfully verifies with the correct secret', () => {
@@ -39,7 +39,7 @@ describe('When verifying a token for a channel', () => {
     expect(result.verified).toBe(true);
     expect(result.code).toBe('verified');
     expect(result.value).not.toBe(undefined);
-    expect(result.value.subscribeTag).toBe('my-tag=awesome');
+    expect(result.value.requiredTag).toBe('my-tag=awesome');
   });
 
   test('The token fails to verify with a bad secret', () => {

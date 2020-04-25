@@ -1,6 +1,6 @@
 {
     "name": "phenixrts/edgeauth",
-    "version": "1.0.0",
+    "version": "1.2.0",
     "type": "library",
     "license": "Apache-2.0",
     "homepage": "https://github.com/PhenixRTS/EdgeAuth",
@@ -18,6 +18,7 @@
         "vanilla/garden-cli": "^2.2"
     },
     "require-dev": {
+        "overtrue/phplint": "^2.0",
         "phpunit/phpunit": "^8.5"
     },
     "autoload": {
@@ -27,7 +28,11 @@
         "psr-4": {"EdgeAuth\\Tests\\": "tests/" }
     },
     "scripts": {
-        "unit": "phpunit -c ./test/phpunit.xml"
+        "test": [
+            "phpunit -c ./test/phpunit.xml",
+            "@lint"
+        ],
+        "lint": "phplint"
     },
     "bin": [
         "bin/edgeauth"
