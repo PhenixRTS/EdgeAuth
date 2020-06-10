@@ -20,11 +20,12 @@ const defaultExpirationInSeconds = 3600;
 
 program
   .option('-u, --applicationId <applicationId>', 'The application ID')
-  .option('-p, --secret <secret>', 'The application secret')
+  .option('-w, --secret <secret>', 'The application secret')
   .option('-l, --expiresInSeconds <timeInSeconds>', 'Token life time in seconds')
   .option('-e, --expiresAt <timestamp>', 'Token expires at timestamp measured in milliseconds since UNIX epoch')
   .option('-a, --authenticationOnly', 'Token can be used for authentication only')
   .option('-s, --streamingOnly', 'Token can be used for streaming only')
+  .option('-p, --publishOnly', 'Token can be used for publishing only')
   .option('-b, --capabilities <capabilities>', '[STREAMING] Comma separated list of capabilities, e.g. for publishing')
   .option('-o, --originStreamId <originStreamId>', '[STREAMING] Token is limited to the given origin stream')
   .option('-c, --channel <channelId>', '[STREAMING] Token is limited to the given channel')
@@ -50,6 +51,10 @@ if (program.authenticationOnly) {
 
 if (program.streamingOnly) {
   tokenBuilder.forStreamingOnly();
+}
+
+if (program.publishingOnly) {
+  tokenBuilder.forPublishingOnly();
 }
 
 if (program.capabilities) {
