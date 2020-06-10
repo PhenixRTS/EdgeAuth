@@ -26,11 +26,12 @@ class EdgeAuthCommand
             $this->cli = new Cli();
             $this->cli->description('Generate an EdgeAuth token')
                 ->opt('applicationId:u', 'The application ID', true)
-                ->opt('secret:p', 'The application secret', true)
+                ->opt('secret:w', 'The application secret', true)
                 ->opt('expiresInSeconds:l', 'Token life time in seconds')
                 ->opt('expiresAt:e', 'Token expires at timestamp measured in milliseconds since UNIX epoch')
                 ->opt('authenticationOnly:a',  'Token can be used for authentication only')
                 ->opt('streamingOnly:s',  'Token can be used for streaming only')
+                ->opt('publishingOnly:p',  'Token can be used for publishing only')
                 ->opt('capabilities:b',  '[STREAMING] Comma separated list of capabilities, e.g. for publishing')
                 ->opt('originStreamId:o', '[STREAMING] Token is limited to the given origin stream')
                 ->opt('channel:c', '[STREAMING] Token is limited to the given channel')
@@ -67,6 +68,11 @@ class EdgeAuthCommand
             $streamingOnly = $parsedArgs->getOpt('streamingOnly');
             if($streamingOnly !== null){
                 $tokenBuilder->forStreamingOnly();
+            }
+
+            $publishingOnly = $parsedArgs->getOpt('publishingOnly');
+            if($publishingOnly !== null){
+                $tokenBuilder->forPublishingOnly();
             }
 
             $capabilities = $parsedArgs->getOpt('capabilities');

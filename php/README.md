@@ -15,7 +15,7 @@ $ composer install
 To run the unit tests with composer:
 
 ```shell script
-$ composer run unit
+$ composer run test
 ```
 
 ## PHP Example
@@ -44,7 +44,7 @@ class Example
 
 Display the help information:
 ```shell script
-./bin/eddgeauth --help
+./bin/edgeauth --help
 ```
 
 Create a token for channel access:

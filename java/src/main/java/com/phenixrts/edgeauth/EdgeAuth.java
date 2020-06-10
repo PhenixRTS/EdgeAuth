@@ -74,6 +74,10 @@ public class EdgeAuth {
       tokenBuilder.forStreamingOnly();
     }
 
+    if (cmd.hasOption("publishingOnly")) {
+      tokenBuilder.forPublishingOnly();
+    }
+
     if (cmd.hasOption("originStreamId")) {
       tokenBuilder.forOriginStream(cmd.getOptionValue("originStreamId"));
     }
@@ -111,11 +115,12 @@ public class EdgeAuth {
     final Options options = new Options();
 
     options.addOption("u", "applicationId", true, "The application ID");
-    options.addOption("p", "secret", true, "The application secret");
+    options.addOption("w", "secret", true, "The application secret");
     options.addOption("l", "expiresInSeconds", true, "Token life time in seconds");
     options.addOption("e", "expiresAt", true, "Token expires at timestamp measured in milliseconds since UNIX epoch");
     options.addOption("a", "authenticationOnly", false, "Token can be used for authentication only");
     options.addOption("s", "streamingOnly", false, "Token can be used for streaming only");
+    options.addOption("p", "publishingOnly", false, "Token can be used for publishing only");
     options.addOption("o", "originStreamId", true, "[STREAMING] Token is limited to the given origin stream");
     options.addOption("c", "channel", true, "[STREAMING] Token is limited to the given channel");
     options.addOption("i", "channelAlias", true, "[STREAMING] Token is limited to the given channel alias");

@@ -7,13 +7,13 @@ Easily generate secure digest tokens to use with the Phenix platform without req
 To install the Phenix Edge Authorization Digest Token library with gradle, add the following depencency line to your `build.gradle`:
 
 ```Groovy
-implementation 'com.phenixrts.edgeauth:edge-auth:1.2.0'
+implementation 'com.phenixrts.edgeauth:edge-auth:1.2.2'
 ```
 
 OR
 
 ```Groovy
-compile group: 'com.phenixrts.edgeauth', name: 'edge-auth', version: '1.2.0'
+compile group: 'com.phenixrts.edgeauth', name: 'edge-auth', version: '1.2.2'
 ```
 
 ### Bundled UberJar
@@ -21,7 +21,7 @@ compile group: 'com.phenixrts.edgeauth', name: 'edge-auth', version: '1.2.0'
 To install the Phenix Edge Authorization Digest Token uberjar bundled with all its dependencies, add the following dependency to your `build.gradle`:
 
 ```Groovy
-compile group: 'com.phenixrts.edgeauth', name: 'edge-auth', version: '1.2.0', clasifier: 'bundle'
+compile group: 'com.phenixrts.edgeauth', name: 'edge-auth', version: '1.2.2', clasifier: 'bundle'
 ```
 
 ## Java Example
@@ -42,10 +42,10 @@ final String token = new TokenBuilder()
 
 Display the help information:
 ```shell script
-java -jar build/libs/edge-auth-1.1-SNAPSHOT-bundle.jar --help
+java -jar build/libs/edge-auth-1.3-SNAPSHOT-bundle.jar --help
 ```
 
 Create a token for channel access:
 ```shell script
-java -jar build/libs/edge-auth-1.1-SNAPSHOT-bundle.jar --applicationId "my-application-id" --secret "my-secret" --expiresInSeconds 3600 --channel "us-northeast#my-application-id#my-channel.1345"
+java -jar build/libs/edge-auth-1.3-SNAPSHOT-bundle.jar --applicationId "my-application-id" --secret "my-secret" --expiresInSeconds 3600 --channel "us-northeast#my-application-id#my-channel.1345"
 ```
