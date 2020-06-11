@@ -36,7 +36,7 @@ class EdgeAuthCommand
                 ->opt('originStreamId:o', '[STREAMING] Token is limited to the given origin stream')
                 ->opt('channel:c', '[STREAMING] Token is limited to the given channel')
                 ->opt('channelAlias:i', '[STREAMING] Token is limited to the given channel alias')
-                ->opt('tag:t', '[REPORTING] Token  is  limited to  the given origin stream tag')
+                ->opt('tag:t', '[STREAMING] Token  is  limited to  the given origin stream tag')
                 ->opt('applyTag:r',  '[REPORTING] Apply tag to the new stream');
 
             // Parse the args
