@@ -181,6 +181,36 @@ class TokenBuilder
     }
 
     /**
+     * Limit the token to the specified room ID. (optional)
+     * @param $roomId
+     * @return $this
+     * @throws \Exception
+     */
+    function forRoom($roomId)
+    {
+        if (!isset($roomId) || !is_string($roomId)) {
+            throw new \Exception('Room ID must be a string');
+        }
+
+        return $this->forTag('roomId:' . $roomId);
+    }
+
+    /**
+     * Limit the token to the specified room alias. (optional)
+     * @param $roomAlias
+     * @return $this
+     * @throws \Exception
+     */
+    function forRoomAlias($roomAlias)
+    {
+        if (!isset($roomAlias) || !is_string($roomAlias)) {
+            throw new \Exception('Room alias must be a string');
+        }
+
+        return $this->forTag('roomAlias:' . $roomAlias);
+    }
+
+    /**
      * Limit the token to the specified tag on the origin stream. (optional)
      * @param $tag
      * @return $this

@@ -36,6 +36,8 @@ class EdgeAuthCommand
                 ->opt('originStreamId:o', '[STREAMING] Token is limited to the given origin stream')
                 ->opt('channel:c', '[STREAMING] Token is limited to the given channel')
                 ->opt('channelAlias:i', '[STREAMING] Token is limited to the given channel alias')
+                ->opt('room:m', '[STREAMING] Token is limited to the given room')
+                ->opt('roomAlias:n', '[STREAMING] Token is limited to the given room alias')
                 ->opt('tag:t', '[STREAMING] Token  is  limited to  the given origin stream tag')
                 ->opt('applyTag:r',  '[REPORTING] Apply tag to the new stream');
 
@@ -96,6 +98,16 @@ class EdgeAuthCommand
             $channelAlias = $parsedArgs->getOpt('channelAlias');
             if($channelAlias !== null){
                 $tokenBuilder->forChannelAlias($channelAlias);
+            }
+
+            $room = $parsedArgs->getOpt('room');
+            if($room !== null){
+                $tokenBuilder->forRoom($room);
+            }
+
+            $roomAlias = $parsedArgs->getOpt('roomAlias');
+            if($roomAlias !== null){
+                $tokenBuilder->forRoomAlias($roomAlias);
             }
 
             $tag = $parsedArgs->getOpt('tag');

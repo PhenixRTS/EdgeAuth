@@ -190,6 +190,34 @@ TokenBuilder.prototype.forChannelAlias = function(channelAlias) {
 };
 
 /**
+ * Limit the token to the specified room ID. (optional)
+ *
+ * @param roomId the room ID
+ * @returns {TokenBuilder} itself
+ */
+TokenBuilder.prototype.forRoom = function(roomId) {
+  if (typeof roomId !== 'string') {
+    throw new Error('Room ID must be a string');
+  }
+
+  return this.forTag('roomId:' + roomId);
+};
+
+/**
+ * Limit the token to the specified room alias. (optional)
+ *
+ * @param roomAlias the room alias
+ * @returns {TokenBuilder} itself
+ */
+TokenBuilder.prototype.forRoomAlias = function(roomAlias) {
+  if (typeof roomAlias !== 'string') {
+    throw new Error('Room alias must be a string');
+  }
+
+  return this.forTag('roomAlias:' + roomAlias);
+};
+
+/**
  * Limit the token to the specified tag on the origin stream. (optional)
  *
  * @param tag the tag required on the origin stream

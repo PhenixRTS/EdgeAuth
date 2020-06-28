@@ -215,6 +215,36 @@ public final class TokenBuilder {
   }
 
   /**
+   * Limit the token to the specified room ID. (optional)
+   *
+   * @param roomId the room ID
+   * @return itself
+   */
+  @Contract("null -> fail, _ -> this")
+  public TokenBuilder forRoom(String roomId) {
+    if (roomId == null) {
+      throw new RuntimeException("Room ID must not be null");
+    }
+
+    return this.forTag("roomId:" + roomId);
+  }
+
+  /**
+   * Limit the token to the specified room alias. (optional)
+   *
+   * @param roomAlias the room alias
+   * @return itself
+   */
+  @Contract("null -> fail, _ -> this")
+  public TokenBuilder forRoomAlias(String roomAlias) {
+    if (roomAlias == null) {
+      throw new RuntimeException("Room alias must not be null");
+    }
+
+    return this.forTag("roomAlias:" + roomAlias);
+  }
+
+  /**
    * Limit the token to the specified tag on the origin stream. (optional)
    *
    * @param tag the tag required on the origin stream

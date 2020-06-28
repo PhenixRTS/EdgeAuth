@@ -90,6 +90,14 @@ public class EdgeAuth {
       tokenBuilder.forChannelAlias(cmd.getOptionValue("channelAlias"));
     }
 
+    if (cmd.hasOption("room")) {
+      tokenBuilder.forRoom(cmd.getOptionValue("room"));
+    }
+
+    if (cmd.hasOption("roomAlias")) {
+      tokenBuilder.forRoomAlias(cmd.getOptionValue("roomAlias"));
+    }
+
     if (cmd.hasOption("tag")) {
       tokenBuilder.forTag(cmd.getOptionValue("tag"));
     }
@@ -124,6 +132,8 @@ public class EdgeAuth {
     options.addOption("o", "originStreamId", true, "[STREAMING] Token is limited to the given origin stream");
     options.addOption("c", "channel", true, "[STREAMING] Token is limited to the given channel");
     options.addOption("i", "channelAlias", true, "[STREAMING] Token is limited to the given channel alias");
+    options.addOption("m", "room", true, "[STREAMING] Token is limited to the given room");
+    options.addOption("n", "roomAlias", true, "[STREAMING] Token is limited to the given room alias");
     options.addOption("t", "tag", true, "[STREAMING] Token is limited to the given origin stream tag");
     options.addOption("r", "applyTag", true, "[REPORTING] Apply tag to the new stream");
     options.addOption("h", "help", false, "Print this message");

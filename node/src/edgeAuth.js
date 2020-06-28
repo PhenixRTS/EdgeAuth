@@ -30,6 +30,8 @@ program
   .option('-o, --originStreamId <originStreamId>', '[STREAMING] Token is limited to the given origin stream')
   .option('-c, --channel <channelId>', '[STREAMING] Token is limited to the given channel')
   .option('-i, --channelAlias <channelAlias>', '[STREAMING] Token is limited to the given channel alias')
+  .option('-m, --room <roomId>', '[STREAMING] Token is limited to the given room')
+  .option('-n, --roomAlias <roomAlias>', '[STREAMING] Token is limited to the given room alias')
   .option('-t, --tag <tag>', '[STREAMING] Token  is  limited to  the given origin stream tag')
   .option('-r, --applyTag <applyTag>', '[REPORTING] Apply tag to the new stream');
 
@@ -71,6 +73,14 @@ if (program.channel) {
 
 if (program.channelAlias) {
   tokenBuilder.forChannelAlias(program.channelAlias);
+}
+
+if (program.room) {
+  tokenBuilder.forRoom(program.room);
+}
+
+if (program.roomAlias) {
+  tokenBuilder.forRoomAlias(program.roomAlias);
 }
 
 if (program.tag) {
