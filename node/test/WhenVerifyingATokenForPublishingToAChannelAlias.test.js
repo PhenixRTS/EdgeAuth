@@ -16,7 +16,7 @@
 const TokenBuilder = require('../src/TokenBuilder');
 const DigestTokens = require('../src/DigestTokens');
 
-describe('When verifying a token for publishing', () => {
+describe('When verifying a token for publishing to a channel alias', () => {
   var token;
 
   beforeEach(() => {

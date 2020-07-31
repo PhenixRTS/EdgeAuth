@@ -16,7 +16,7 @@
 const TokenBuilder = require('../src/TokenBuilder');
 const DigestTokens = require('../src/DigestTokens');
 
-describe('When verifying a token for a room alias', () => {
+describe('When verifying a token for a channel alias and session', () => {
   var token;
 
   beforeEach(() => {
@@ -24,13 +24,14 @@ describe('When verifying a token for a room alias', () => {
       .withApplicationId('my-application-id')
       .withSecret(('my-secret'))
       .expiresAt(new Date(1000))
-      .forRoomAlias('my-room')
+      .forChannelAlias('my-channel')
+      .forSession('session-id')
       .forStreamingOnly()
       .build();
   });
 
   test('The token matches the expected value', () => {
-    expect(token).toBe('DIGEST:eyJhcHBsaWNhdGlvbklkIjoibXktYXBwbGljYXRpb24taWQiLCJkaWdlc3QiOiI1UkN3a0FrdFdJTDNWNllXN0V0dE14ejhpZXJvMWZkcXF0dEdRVFdaUDVCZ1k0OFhIUGltYmx3dDl1QUgyQWI3bHVVcWs0OG1DQktveE10WkhpaHNoQT09IiwidG9rZW4iOiJ7XCJleHBpcmVzXCI6MTAwMCxcInJlcXVpcmVkVGFnXCI6XCJyb29tQWxpYXM6bXktcm9vbVwiLFwidHlwZVwiOlwic3RyZWFtXCJ9In0=');
+    expect(token).toBe('DIGEST:eyJhcHBsaWNhdGlvbklkIjoibXktYXBwbGljYXRpb24taWQiLCJkaWdlc3QiOiJBQi9Nanp2a1lnMGRTODF6aU1SVDZ3OUtwWmtjMU42U3VMTW56V09CQVJQZWJuenRHZTlmM2ZNS1FURXVqaHpVTkY0TWVsNkpMekFiWlZ3TFBSbEN4QT09IiwidG9rZW4iOiJ7XCJleHBpcmVzXCI6MTAwMCxcInJlcXVpcmVkVGFnXCI6XCJjaGFubmVsQWxpYXM6bXktY2hhbm5lbFwiLFwic2Vzc2lvbklkXCI6XCJzZXNzaW9uLWlkXCIsXCJ0eXBlXCI6XCJzdHJlYW1cIn0ifQ==');
   });
 
   test('The token successfully verifies with the correct secret', () => {
@@ -39,7 +40,8 @@ describe('When verifying a token for a room alias', () => {
     expect(result.verified).toBe(true);
     expect(result.code).toBe('verified');
     expect(result.value).not.toBe(undefined);
-    expect(result.value.requiredTag).toBe('roomAlias:my-room');
+    expect(result.value.requiredTag).toBe('channelAlias:my-channel');
+    expect(result.value.sessionId).toBe('session-id');
   });
 
   test('The token fails to verify with a bad secret', () => {

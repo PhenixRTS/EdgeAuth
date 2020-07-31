@@ -26,13 +26,15 @@ program
   .option('-a, --authenticationOnly', 'Token can be used for authentication only')
   .option('-s, --streamingOnly', 'Token can be used for streaming only')
   .option('-p, --publishingOnly', 'Token can be used for publishing only')
-  .option('-b, --capabilities <capabilities>', '[STREAMING] Comma separated list of capabilities, e.g. for publishing')
+  .option('-b, --capabilities <capabilities>', 'Comma separated list of capabilities, e.g. for publishing')
+  .option('-z, --sessionId <sessionId>', 'Token is limited to the given session')
+  .option('-x, --remoteAddress <remoteAddress>', 'Token is limited to the given remote address')
   .option('-o, --originStreamId <originStreamId>', '[STREAMING] Token is limited to the given origin stream')
   .option('-c, --channel <channelId>', '[STREAMING] Token is limited to the given channel')
   .option('-i, --channelAlias <channelAlias>', '[STREAMING] Token is limited to the given channel alias')
   .option('-m, --room <roomId>', '[STREAMING] Token is limited to the given room')
   .option('-n, --roomAlias <roomAlias>', '[STREAMING] Token is limited to the given room alias')
-  .option('-t, --tag <tag>', '[STREAMING] Token  is  limited to  the given origin stream tag')
+  .option('-t, --tag <tag>', '[STREAMING] Token is limited to the given origin stream tag')
   .option('-r, --applyTag <applyTag>', '[REPORTING] Apply tag to the new stream');
 
 program.parse(process.argv);
@@ -61,6 +63,14 @@ if (program.publishingOnly) {
 
 if (program.capabilities) {
   program.capabilities.split(',').forEach((capability) => tokenBuilder.withCapability(capability));
+}
+
+if (program.sessionId) {
+  tokenBuilder.forSession(program.sessionId);
+}
+
+if (program.remoteAddress) {
+  tokenBuilder.forRemoteAddress(program.remoteAddress);
 }
 
 if (program.originStreamId) {

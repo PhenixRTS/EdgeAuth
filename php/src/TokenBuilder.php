@@ -34,6 +34,7 @@ class TokenBuilder
         }
 
         $this->applicationId = $applicationId;
+
         return $this;
     }
 
@@ -50,6 +51,7 @@ class TokenBuilder
         }
 
         $this->secret = $secret;
+
         return $this;
     }
 
@@ -70,6 +72,7 @@ class TokenBuilder
         }
 
         $this->token->capabilities[] = $capability;
+
         return $this;
     }
 
@@ -83,6 +86,7 @@ class TokenBuilder
     function expiresInSeconds($seconds)
     {
         $this->token->expires = round(microtime(true) * 1000) + ($seconds * 1000);
+
         return $this;
     }
 
@@ -101,6 +105,7 @@ class TokenBuilder
         }
 
         $this->token->expires = $expirationDate->format('U.u') * 1000;
+
         return $this;
     }
 
@@ -111,6 +116,7 @@ class TokenBuilder
     function forAuthenticateOnly()
     {
         $this->token->type = 'auth';
+
         return $this;
     }
 
@@ -121,6 +127,7 @@ class TokenBuilder
     function forStreamingOnly()
     {
         $this->token->type = 'stream';
+
         return $this;
     }
 
@@ -131,6 +138,41 @@ class TokenBuilder
     function forPublishingOnly()
     {
         $this->token->type = 'publish';
+
+        return $this;
+    }
+
+    /**
+     * Limit the token to the specified session ID. (optional)
+     * @param $sessionId
+     * @return $this
+     * @throws \Exception
+     */
+    function forSession($sessionId)
+    {
+        if (!isset($sessionId) || !is_string($sessionId)) {
+            throw new \Exception('Session ID must be a string');
+        }
+
+        $this->token->sessionId = $sessionId;
+
+        return $this;
+    }
+
+    /**
+     * Limit the token to the specified remote address. (optional)
+     * @param $remoteAddress
+     * @return $this
+     * @throws \Exception
+     */
+    function forRemoteAddress($remoteAddress)
+    {
+        if (!isset($remoteAddress) || !is_string($remoteAddress)) {
+            throw new \Exception('Remote address must be a string');
+        }
+
+        $this->token->remoteAddress = $remoteAddress;
+
         return $this;
     }
 
@@ -147,6 +189,7 @@ class TokenBuilder
         }
 
         $this->token->originStreamId = $originStreamId;
+
         return $this;
     }
 
@@ -223,6 +266,7 @@ class TokenBuilder
         }
 
         $this->token->requiredTag = $tag;
+
         return $this;
     }
 
@@ -255,6 +299,7 @@ class TokenBuilder
     function build()
     {
         $digestTokens = new DigestTokens();
+
         return $digestTokens->signAndEncode($this->applicationId, $this->secret, $this->token);
     }
 }

@@ -1,6 +1,6 @@
 {
     "name": "phenixrts/edgeauth",
-    "version": "1.2.3",
+    "version": "1.2.4",
     "type": "library",
     "license": "Apache-2.0",
     "homepage": "https://github.com/PhenixRTS/EdgeAuth",
@@ -8,7 +8,7 @@
     "keywords": ["edge-authentication", "token-authentication", "phenix", "real-time", "video", "streaming-video"],
     "authors": [
         {
-            "name": "Phenix Real Time Systems",
+            "name": "Phenix Real Time Solutions, Inc.",
             "homepage": "https://www.phenixrts.com"
         }
     ],

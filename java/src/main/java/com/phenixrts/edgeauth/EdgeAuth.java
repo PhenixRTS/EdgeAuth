@@ -78,6 +78,20 @@ public class EdgeAuth {
       tokenBuilder.forPublishingOnly();
     }
 
+    if (cmd.hasOption("capability")) {
+      for (final String capability: cmd.getOptionValues("capability")) {
+        tokenBuilder.withCapability(capability);
+      }
+    }
+
+    if (cmd.hasOption("sessionId")) {
+      tokenBuilder.forSession(cmd.getOptionValue("sessionId"));
+    }
+
+    if (cmd.hasOption("remoteAddress")) {
+      tokenBuilder.forRemoteAddress(cmd.getOptionValue("remoteAddress"));
+    }
+
     if (cmd.hasOption("originStreamId")) {
       tokenBuilder.forOriginStream(cmd.getOptionValue("originStreamId"));
     }
@@ -129,6 +143,9 @@ public class EdgeAuth {
     options.addOption("a", "authenticationOnly", false, "Token can be used for authentication only");
     options.addOption("s", "streamingOnly", false, "Token can be used for streaming only");
     options.addOption("p", "publishingOnly", false, "Token can be used for publishing only");
+    options.addOption("b", "capability", true, "Comma separated list of capabilities, e.g. for publishing");
+    options.addOption("z", "sessionId", true, "Token is limited to the given session");
+    options.addOption("x", "remoteAddress", true, "Token is limited to the given remote address");
     options.addOption("o", "originStreamId", true, "[STREAMING] Token is limited to the given origin stream");
     options.addOption("c", "channel", true, "[STREAMING] Token is limited to the given channel");
     options.addOption("i", "channelAlias", true, "[STREAMING] Token is limited to the given channel alias");

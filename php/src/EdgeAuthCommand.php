@@ -32,7 +32,9 @@ class EdgeAuthCommand
                 ->opt('authenticationOnly:a',  'Token can be used for authentication only')
                 ->opt('streamingOnly:s',  'Token can be used for streaming only')
                 ->opt('publishingOnly:p',  'Token can be used for publishing only')
-                ->opt('capabilities:b',  '[STREAMING] Comma separated list of capabilities, e.g. for publishing')
+                ->opt('capabilities:b',  'Comma separated list of capabilities, e.g. for publishing')
+                ->opt('sessionId:z',  'Token is limited to the given session')
+                ->opt('remoteAddress:x',  'Token is limited to the given remote address')
                 ->opt('originStreamId:o', '[STREAMING] Token is limited to the given origin stream')
                 ->opt('channel:c', '[STREAMING] Token is limited to the given channel')
                 ->opt('channelAlias:i', '[STREAMING] Token is limited to the given channel alias')
@@ -83,6 +85,16 @@ class EdgeAuthCommand
                 foreach($allCapabilities as $curCapability){
                     $tokenBuilder->withCapability($curCapability);
                 }
+            }
+
+            $sessionId = $parsedArgs->getOpt('sessionId');
+            if($sessionId !== null){
+                $tokenBuilder->forSession($sessionId);
+            }
+
+            $remoteAddress = $parsedArgs->getOpt('remoteAddress');
+            if($remoteAddress !== null){
+                $tokenBuilder->forRemoteAddress($remoteAddress);
             }
 
             $originStreamId = $parsedArgs->getOpt('originStreamId');

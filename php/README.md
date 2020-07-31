@@ -44,12 +44,12 @@ class Example
 
 Display the help information:
 ```shell script
-./bin/edgeauth --help
+./bin/edgeAuth --help
 ```
 
 Create a token for channel access:
 ```shell script
-./bin/edgeauth --applicationId "my-application-id" --secret "my-secret" --expiresInSeconds 3600 --channel "us-northeast#my-application-id#my-channel.1345"
+./bin/edgeAuth --applicationId "my-application-id" --secret "my-secret" --expiresInSeconds 3600 --channel "us-northeast#my-application-id#my-channel.1345"
 ```
 
 ## To include Phenix EdgeAuth in your PHP project
@@ -62,7 +62,7 @@ Add these entries to your composer.json:
     .
     .
     "require": {
-        "phenixrts/edgeauth": "1.2.0"
+        "phenixrts/edgeauth": "1.2.4"
     }
     .
     .
@@ -72,10 +72,10 @@ Add these entries to your composer.json:
         "package": {
           "name": "phenixrts/edgeauth",
           "type": "zip",
-          "version": "1.2.0",
+          "version": "1.2.4",
           "dist": {
             "type": "zip",
-            "url": "https://github.com/PhenixRTS/EdgeAuth/releases/download/php%401.2.0/php@1.2.0.zip"
+            "url": "https://github.com/PhenixRTS/EdgeAuth/releases/download/php%401.2.4/php@1.2.4.zip"
           }
         }
     }]

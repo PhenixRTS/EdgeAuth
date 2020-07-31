@@ -146,6 +146,38 @@ TokenBuilder.prototype.forPublishingOnly = function() {
 };
 
 /**
+ * Limit the token to the specified session ID. (optional)
+ *
+ * @param sessionId the session ID
+ * @returns {TokenBuilder} itself
+ */
+TokenBuilder.prototype.forSession = function(sessionId) {
+  if (typeof sessionId !== 'string') {
+    throw new Error('Session ID must be a string');
+  }
+
+  this.token.sessionId = sessionId;
+
+  return this;
+};
+
+/**
+ * Limit the token to the specified remote address. (optional)
+ *
+ * @param remoteAddress the remote address
+ * @returns {TokenBuilder} itself
+ */
+TokenBuilder.prototype.forRemoteAddress = function(remoteAddress) {
+  if (typeof remoteAddress !== 'string') {
+    throw new Error('Remote address must be a string');
+  }
+
+  this.token.remoteAddress = remoteAddress;
+
+  return this;
+};
+
+/**
  * Limit the token to the specified origin stream ID. (optional)
  *
  * @param originStreamId the origin stream ID

@@ -16,7 +16,7 @@
 const TokenBuilder = require('../src/TokenBuilder');
 const DigestTokens = require('../src/DigestTokens');
 
-describe('When verifying a token for a channel', () => {
+describe('When verifying a token for a channel alias and tag added', () => {
   var token;
 
   beforeEach(() => {

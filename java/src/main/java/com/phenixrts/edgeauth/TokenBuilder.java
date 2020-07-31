@@ -16,6 +16,7 @@
 
 package com.phenixrts.edgeauth;
 
+import java.net.InetAddress;
 import java.util.Date;
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
@@ -28,6 +29,8 @@ import org.jetbrains.annotations.Contract;
  */
 public final class TokenBuilder {
   private static final String FIELD_TYPE = "type";
+  private static final String FIELD_SESSION_ID = "sessionId";
+  private static final String FIELD_REMOTE_ADDRESS_ID = "remoteAddress";
   private static final String FIELD_ORIGIN_STREAM_ID = "originStreamId";
   private static final String FIELD_REQUIRED_TAG = "requiredTag";
   private static final String FIELD_APPLY_TAGS = "applyTags";
@@ -165,6 +168,55 @@ public final class TokenBuilder {
     this.tokenBuilder.add(FIELD_TYPE, "publish");
 
     return this;
+  }
+
+  /**
+   * Limit the token to the specified session ID. (optional)
+   *
+   * @param sessionId the session ID
+   * @return itself
+   */
+  @Contract("null -> fail, _ -> this")
+  public TokenBuilder forSession(String sessionId) {
+    if (sessionId == null) {
+      throw new RuntimeException("Session ID must not be null");
+    }
+
+    this.tokenBuilder.add(FIELD_SESSION_ID, sessionId);
+
+    return this;
+  }
+
+  /**
+   * Limit the token to the specified remote address. (optional)
+   *
+   * @param remoteAddress the remote address
+   * @return itself
+   */
+  @Contract("null -> fail, _ -> this")
+  public TokenBuilder forRemoteAddress(String remoteAddress) {
+    if (remoteAddress == null) {
+      throw new RuntimeException("Remote address must not be null");
+    }
+
+    this.tokenBuilder.add(FIELD_REMOTE_ADDRESS_ID, remoteAddress);
+
+    return this;
+  }
+
+  /**
+   * Limit the token to the specified remote address. (optional)
+   *
+   * @param remoteAddress the remote address
+   * @return itself
+   */
+  @Contract("null -> fail, _ -> this")
+  public TokenBuilder forRemoteAddress(InetAddress remoteAddress) {
+    if (remoteAddress == null) {
+      throw new RuntimeException("Remote address must not be null");
+    }
+
+    return forRemoteAddress(remoteAddress.toString());
   }
 
   /**
