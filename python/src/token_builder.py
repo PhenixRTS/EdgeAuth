@@ -1,6 +1,6 @@
-from datetime import datetime
+from datetime import datetime, timezone
 
-from DigestTokens import DigestToken
+from digest_tokens import DigestTokens
 
 
 class TokenBuilder:
@@ -69,7 +69,7 @@ class TokenBuilder:
         if not isinstance(seconds, int) and not isinstance(seconds, float):
             raise TypeError('Seconds must be a float or an int')
 
-        self.token['expires'] = datetime.timestamp(datetime.now()) + (seconds * 1000)
+        self.token['expires'] = (datetime.now().replace(tzinfo=timezone.utc).timestamp() + seconds) * 1000
 
         return self
 
@@ -233,7 +233,7 @@ class TokenBuilder:
     def build(self):
         """Build the signed token
         """
-        token = DigestToken()
+        token = DigestTokens()
 
         if not self.application_id:
             raise ValueError('application_id must be set using the "with_application_id" method before calling "build"')

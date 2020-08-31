@@ -2,10 +2,11 @@ import hashlib
 import hmac
 import base64
 import json
+from io import StringIO
 
 
 DIGEST_TOKEN_PREFIX = 'DIGEST'
-DECODED_TOKEN_ENCODING = 'utf-8'
+ENCODING = 'utf-8'
 
 
 class BadToken(Exception):
@@ -46,7 +47,7 @@ class DigestTokens:
                 }
 
             encoded_digest_token = encoded_token[len(DIGEST_TOKEN_PREFIX):]
-            decoded_digest_token_as_string = base64.b64decode(encoded_digest_token).decode(DECODED_TOKEN_ENCODING)
+            decoded_digest_token_as_string = base64.b64decode(encoded_digest_token).decode(ENCODING)
 
             info = None
 
@@ -110,22 +111,31 @@ class DigestTokens:
         if not isinstance(token, dict):
             raise TypeError('Token must be a dictionary')
 
-        if 'expires' not in token or not isinstance(token['expires'], int):
+        if 'expires' not in token or not type(token['expires']) in [float, ]:
             raise ValueError('Token must have an expiration (milliseconds since UNIX epoch)')
 
-        if 'applicationId' not in token:
-            raise ValueError('Token should not have an application ID property')
+        if 'application_id' in token:
+            raise ValueError('Token should not have an application_id property')
 
-        token_as_string = json.dumps(token)
+        io = StringIO()
+        json.dump(token, io)
+        token_as_string = io.getvalue()
+
         digest = self.calculate_digest(application_id, secret, token_as_string)
+
+        print('Digest: ', digest)
+
         info = {
             'applicationId': application_id,
             'digest': digest,
             'token': token_as_string,
         }
 
-        decoded_digest_token_as_string = json.dumps(info).encode(DECODED_TOKEN_ENCODING)
-        encoded_digest_token = base64.b64encode(decoded_digest_token_as_string).decode(DECODED_TOKEN_ENCODING)
+        decoded_digest_token_as_string = json.dumps(info).encode(ENCODING)
+
+        print('decoded: ', decoded_digest_token_as_string)
+
+        encoded_digest_token = base64.b64encode(decoded_digest_token_as_string).decode(ENCODING)
 
         return DIGEST_TOKEN_PREFIX + encoded_digest_token
 
@@ -147,7 +157,9 @@ class DigestTokens:
             raise TypeError('Token must be a string')
 
         salt = application_id + secret
-        verify = hmac.new(bytes(salt, 'utf-8'), digestmod=hashlib.sha256)
-        verify.update(token.encode(DECODED_TOKEN_ENCODING))
 
-        return base64.b64.encode(verify.digest())
+        verify = hmac.new(bytes(salt, ENCODING), digestmod=hashlib.sha256)
+
+        verify.update(token.encode(ENCODING))
+
+        return base64.b64encode(verify.digest()).decode(ENCODING)
