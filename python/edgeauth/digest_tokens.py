@@ -5,7 +5,7 @@ import json
 from io import StringIO
 
 
-DIGEST_TOKEN_PREFIX = 'DIGEST'
+DIGEST_TOKEN_PREFIX = 'DIGEST:'
 ENCODING = 'utf-8'
 
 
@@ -24,7 +24,7 @@ class DigestTokens:
         Keyword arguments:
         encodedToken -- an encoded token
         """
-        return encoded_token and isinstance(encoded_token, str) and encoded_token.startsWith(DIGEST_TOKEN_PREFIX)
+        return encoded_token and isinstance(encoded_token, str) and encoded_token.startswith(DIGEST_TOKEN_PREFIX)
 
     def verify_and_decode(self, secret, encoded_token):
         """Verifies and decodes a digest token.
@@ -47,7 +47,8 @@ class DigestTokens:
                 }
 
             encoded_digest_token = encoded_token[len(DIGEST_TOKEN_PREFIX):]
-            decoded_digest_token_as_string = base64.b64decode(encoded_digest_token).decode(ENCODING)
+            decoded_digest_token_as_string = base64 \
+                .b64decode(encoded_digest_token)
 
             info = None
 
@@ -65,7 +66,12 @@ class DigestTokens:
             if not info['token'] or not isinstance(info['token'], str):
                 raise BadToken()
 
-            digest_as_string = self.calculate_digest(info['applicationId'], secret, info['token'])
+            digest_as_string = self.calculate_digest(
+                info['applicationId'],
+                secret,
+                info['token']
+            )
+
             digest = info['digest']
 
             if not digest_as_string == digest:
@@ -80,9 +86,10 @@ class DigestTokens:
                 'value': value,
                 'verified': True,
             }
-        except BadToken:
+        except BadToken as ex:
             return {
                 'code': 'bad-token',
+                # 'message': str(ex),
                 'verified': False,
             }
         except BadDigest:
@@ -111,19 +118,19 @@ class DigestTokens:
         if not isinstance(token, dict):
             raise TypeError('Token must be a dictionary')
 
-        if 'expires' not in token or not type(token['expires']) in [float, ]:
+        if 'expires' not in token or not type(token['expires']) in [float, int]:
             raise ValueError('Token must have an expiration (milliseconds since UNIX epoch)')
 
         if 'application_id' in token:
             raise ValueError('Token should not have an application_id property')
 
-        io = StringIO()
-        json.dump(token, io)
-        token_as_string = io.getvalue()
+        # io = StringIO()
+        # json.dump(token, io)
+        # token_as_string = io.getvalue()
+
+        token_as_string = json.dumps(token, separators=(',', ':'))
 
         digest = self.calculate_digest(application_id, secret, token_as_string)
-
-        print('Digest: ', digest)
 
         info = {
             'applicationId': application_id,
@@ -131,11 +138,10 @@ class DigestTokens:
             'token': token_as_string,
         }
 
-        decoded_digest_token_as_string = json.dumps(info).encode(ENCODING)
-
-        print('decoded: ', decoded_digest_token_as_string)
-
-        encoded_digest_token = base64.b64encode(decoded_digest_token_as_string).decode(ENCODING)
+        decoded_digest_token_as_string = json.dumps(info, separators=(',', ':'))
+        encoded_digest_token = base64 \
+            .b64encode(decoded_digest_token_as_string.encode(ENCODING)) \
+            .decode(ENCODING)
 
         return DIGEST_TOKEN_PREFIX + encoded_digest_token
 
@@ -156,10 +162,11 @@ class DigestTokens:
         if not isinstance(token, str):
             raise TypeError('Token must be a string')
 
-        salt = application_id + secret
-
-        verify = hmac.new(bytes(salt, ENCODING), digestmod=hashlib.sha256)
+        salt = (application_id + secret).encode(ENCODING)
+        verify = hmac.new(salt, digestmod=hashlib.sha512)
 
         verify.update(token.encode(ENCODING))
 
-        return base64.b64encode(verify.digest()).decode(ENCODING)
+        digest = base64.b64encode(verify.digest()).decode(ENCODING)
+
+        return digest
