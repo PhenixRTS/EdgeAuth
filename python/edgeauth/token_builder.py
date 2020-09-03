@@ -1,6 +1,6 @@
 from datetime import datetime, timezone
 
-from edgeauth.digest_tokens import DigestTokens
+from .digest_tokens import DigestTokens
 
 
 class TokenBuilder:
@@ -51,11 +51,11 @@ class TokenBuilder:
             raise TypeError('Capability must be a string')
 
         token = self.token
-        capabilities = set(token['capabilities']) if 'capabilities' in token else set()
+        capabilities = set(token['capabilities']) if 'capabilities' in token else set([])
 
         capabilities.add(capability)
 
-        self.token['capabilities'] = list(capabilities)
+        self.token['capabilities'] = sorted(list(capabilities))
 
         return self
 

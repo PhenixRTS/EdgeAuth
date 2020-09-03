@@ -10,6 +10,12 @@ To install Phenix Edge Authorization Digest Token with npm:
 $ pip install phenix-edge-auth
 ```
 
+## Testing
+
+```shell script
+$ pytest -vv
+```
+
 ## Example
 
 ```python
@@ -28,7 +34,11 @@ token = TokenBuilder()
 
 Display the help information:
 ```shell script
-python edgeauth/edgeauth.py --help
+$ edgeauth_cli --help
+```
+
+```shell script
+$ edgeauth_cli -w=my-secret -u=my-application-id
 ```
 
 Create a token for channel access:
