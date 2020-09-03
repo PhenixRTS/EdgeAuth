@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30225.117
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PhenixRTS.EdgeAuth", "PhenixRTS.EdgeAuth\PhenixRTS.EdgeAuth.csproj", "{A3605371-C6CF-4BCC-B3C1-B4AE06D3F47E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PhenixRTS.EdgeAuth.CLI", "PhenixRTS.EdgeAuth.CLI\PhenixRTS.EdgeAuth.CLI.csproj", "{DD6AE21B-A618-4C6D-B052-F45214116584}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PhenixRTS.EdgeAuth.Tests", "PhenixRTS.EdgeAuth.Tests\PhenixRTS.EdgeAuth.Tests.csproj", "{057C68A7-C1E4-4FBE-91FA-3E197242CDD2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A3605371-C6CF-4BCC-B3C1-B4AE06D3F47E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3605371-C6CF-4BCC-B3C1-B4AE06D3F47E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3605371-C6CF-4BCC-B3C1-B4AE06D3F47E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3605371-C6CF-4BCC-B3C1-B4AE06D3F47E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DD6AE21B-A618-4C6D-B052-F45214116584}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD6AE21B-A618-4C6D-B052-F45214116584}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD6AE21B-A618-4C6D-B052-F45214116584}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD6AE21B-A618-4C6D-B052-F45214116584}.Release|Any CPU.Build.0 = Release|Any CPU
+		{057C68A7-C1E4-4FBE-91FA-3E197242CDD2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{057C68A7-C1E4-4FBE-91FA-3E197242CDD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{057C68A7-C1E4-4FBE-91FA-3E197242CDD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{057C68A7-C1E4-4FBE-91FA-3E197242CDD2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {13A7A214-7975-434D-88A6-A81E1D3F94E8}
+	EndGlobalSection
+EndGlobal

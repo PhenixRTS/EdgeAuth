@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "PhenixEdgeAuthCLI": {
+      "commandName": "Project",
+      "commandLineArgs": "--applicationId \"my-application-id\" --secret 'my-secret' -e 3600 --channel \"us-northeast#my-application-id#my-channel.1345\""
+    }
+  }
+}
