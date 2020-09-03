@@ -1,10 +1,10 @@
-# Phenix EdgeAuth Digest Tokens for Node
+# Phenix EdgeAuth Digest Tokens for Python
 
 Easily generate secure digest tokens to use with the Phenix platform without requiring any networking activity.
 
 ## Installation
 
-To install Phenix Edge Authorization Digest Token with npm:
+To install Phenix Edge Authorization Digest Token with pip:
 
 ```shell script
 $ pip install phenix-edge-auth
