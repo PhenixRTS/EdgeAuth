@@ -3,7 +3,7 @@ import argparse
 from pprint import PrettyPrinter
 from sys import version_info
 
-from token_builder import TokenBuilder
+from edgeauth.token_builder import TokenBuilder
 
 PY3_MIN_VERSION = (3, 6)
 

@@ -1,10 +1,15 @@
 from setuptools import setup
 
+with open("README.md", "r") as fh:
+    long_description = fh.read()
+
 setup(
     name='phenix-edge-auth',
     version='0.1.0',
     description='A example Python package',
-    url='https://github.com/shuds13/pyexample',
+    long_description=long_description,
+    long_description_content_type="text/markdown",
+    url='https://github.com/tomoguisuru/EdgeAuth/python',
     author='Brandon Drake',
     author_email='tomoguisuru@gmail.com',
     license='Apache-2.0',
@@ -15,10 +20,9 @@ setup(
     ],
 
     classifiers=[
-        'Development Status :: 1 - Planning',
-        'Intended Audience :: Business',
-        'License :: OSI Approved :: BSD License',
-        'Operating System :: POSIX :: Linux',
-        'Programming Language :: Python :: 3.6',
+        "Programming Language :: Python :: 3",
+        "License :: OSI Approved :: MIT License",
+        "Operating System :: OS Independent",
     ],
+    python_requires='>=3.6',
 )
