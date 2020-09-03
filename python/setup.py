@@ -22,7 +22,7 @@ setup(
     description='A example Python package',
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url='https://github.com/tomoguisuru/EdgeAuth/python',
+    url='https://github.com/PhenixRTS/EdgeAuth/python',
     author='Brandon Drake',
     author_email='tomoguisuru@gmail.com',
     license='Apache-2.0',
