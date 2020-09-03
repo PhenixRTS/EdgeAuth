@@ -37,11 +37,7 @@ Display the help information:
 $ edgeauth_cli --help
 ```
 
-```shell script
-$ edgeauth_cli -w=my-secret -u=my-application-id
-```
-
 Create a token for channel access:
 ```shell script
-python edgeauth/edgeauth.py --application_id "my-application-id" --secret "my-secret" --expires_in_seconds 3600 --channel "us-northeast#my-application-id#my-channel.1345"
+$ edgeauth_cli --application_id "my-application-id" --secret "my-secret" --expires_in_seconds 3600 --channel "us-northeast#my-application-id#my-channel.1345"
 ```
