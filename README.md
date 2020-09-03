@@ -8,3 +8,4 @@ We currently provide SDKs for the following platforms:
 * [Node.js](./node)
 * [PHP](./php)
 * [DotNet](./dotnet)
+* [Python](./python)
