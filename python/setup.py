@@ -19,7 +19,7 @@ test_requirements = [
 setup(
     name='phenix-edge-auth',
     version='0.1.1',
-    description='A example Python package',
+    description='Easily generate secure digest tokens to use with the Phenix platform',
     long_description=long_description,
     long_description_content_type="text/markdown",
     url='https://github.com/PhenixRTS/EdgeAuth/python',
