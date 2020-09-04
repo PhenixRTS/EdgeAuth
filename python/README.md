@@ -16,6 +16,13 @@ $ pip install phenix-edge-auth
 $ pytest -vv
 ```
 
+## Updating PyPi
+
+```shell script
+$ python setup.py bdist_whe
+$ twine upload dist/*
+```
+
 ## Example
 
 ```python
