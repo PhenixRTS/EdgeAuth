@@ -18,7 +18,7 @@ test_requirements = [
 
 setup(
     name='phenix-edge-auth',
-    version='0.1.0',
+    version='0.1.1',
     description='A example Python package',
     long_description=long_description,
     long_description_content_type="text/markdown",
