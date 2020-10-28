@@ -27,6 +27,22 @@ function TokenBuilder() {
 }
 
 /**
+ * The backend URI. (optional)
+ *
+ * @param uri the backend URI
+ * @returns {TokenBuilder} itself
+ */
+TokenBuilder.prototype.withUri = function(uri) {
+  if (typeof uri !== 'string') {
+    throw new Error('URI must be a string');
+  }
+
+  this.token.uri = uri;
+
+  return this;
+};
+
+/**
  * The application ID used to sign the token. (required)
  *
  * @param applicationId the application ID to sign the token
@@ -294,6 +310,15 @@ TokenBuilder.prototype.build = function() {
   const digestTokens = new DigestTokens();
 
   return digestTokens.signAndEncode(this.applicationId, this.secret, this.token);
+};
+
+/**
+ * Return the token object.
+ *
+ * @returns {Object} the token object
+ */
+TokenBuilder.prototype.value = function() {
+  return this.token;
 };
 
 module.exports = TokenBuilder;

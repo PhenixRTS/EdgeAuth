@@ -19,6 +19,7 @@ const TokenBuilder = require('./TokenBuilder');
 const defaultExpirationInSeconds = 3600;
 
 program
+  .option('-y, --uri <uri>', 'The backend URI')
   .option('-u, --applicationId <applicationId>', 'The application ID')
   .option('-w, --secret <secret>', 'The application secret')
   .option('-l, --expiresInSeconds <timeInSeconds>', 'Token life time in seconds')
@@ -42,6 +43,10 @@ program.parse(process.argv);
 const tokenBuilder = new TokenBuilder()
   .withApplicationId(program.applicationId)
   .withSecret(program.secret);
+
+if (program.uri) {
+  tokenBuilder.withUri(program.uri);
+}
 
 if (program.expiresAt !== undefined) {
   tokenBuilder.expiresAt(new Date(parseInt(program.expiresAt, 10)));
@@ -100,6 +105,10 @@ if (program.tag) {
 if (program.applyTag) {
   tokenBuilder.applyTag(program.applyTag);
 }
+
+const tokenObject = tokenBuilder.value();
+
+console.log(tokenObject);
 
 const token = tokenBuilder.build();
 
