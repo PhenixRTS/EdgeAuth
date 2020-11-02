@@ -130,7 +130,7 @@ class DigestTokens
             throw new \Exception('Token should not have an application ID property');
         }
 
-        $tokenAsString = json_encode($token);
+        $tokenAsString = json_encode($token, JSON_UNESCAPED_SLASHES);
         $digest = $this->calculateDigest($applicationId, $secret, $tokenAsString);
 
         $info = (object)[

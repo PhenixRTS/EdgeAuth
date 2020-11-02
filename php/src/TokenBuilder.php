@@ -22,6 +22,24 @@ class TokenBuilder
     }
 
     /**
+     * The backend URI. (optional)
+     *
+     * @param string $uri
+     * @return $this
+     * @throws \Exception
+     */
+    function withUri($uri)
+    {
+        if (!isset($uri) || !is_string($uri)) {
+            throw new \Exception('URI must be a string.');
+        }
+
+        $this->token->uri = $uri;
+
+        return $this;
+    }
+
+    /**
      * The application ID used to sign the token. (required)
      * @param string $applicationId
      * @return $this

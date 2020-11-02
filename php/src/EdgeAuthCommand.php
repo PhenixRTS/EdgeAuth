@@ -25,6 +25,7 @@ class EdgeAuthCommand
         try{
             $this->cli = new Cli();
             $this->cli->description('Generate an EdgeAuth token')
+                ->opt('uri:y', 'The backend URI')
                 ->opt('applicationId:u', 'The application ID', true)
                 ->opt('secret:w', 'The application secret', true)
                 ->opt('expiresInSeconds:l', 'Token life time in seconds')
@@ -51,6 +52,11 @@ class EdgeAuthCommand
                 ->withApplicationId($parsedArgs->getOpt('applicationId'))
                 ->withSecret($parsedArgs->getOpt('secret'))
             ;
+
+            $uri = $parsedArgs->getOpt('uri');
+            if ($uri !== null) {
+                $tokenBuilder->withUri($uri);
+            }
 
             $expiresAt = $parsedArgs->getOpt('expiresAt');
             if($expiresAt !== null){
