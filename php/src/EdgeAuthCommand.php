@@ -138,6 +138,10 @@ class EdgeAuthCommand
                 $tokenBuilder->applyTag($applyTag);
             }
 
+            $tokenObject = $tokenBuilder->value();
+
+            echo json_encode($tokenObject, JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES).PHP_EOL;
+
             echo $tokenBuilder->build().PHP_EOL;
         } catch(\Exception $ex){
             echo $ex->getMessage();

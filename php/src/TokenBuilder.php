@@ -320,4 +320,14 @@ class TokenBuilder
 
         return $digestTokens->signAndEncode($this->applicationId, $this->secret, $this->token);
     }
+
+    /**
+    * Return the token object.
+    *
+    * @returns {Object} the token object
+    */
+    function value()
+    {
+        return $this->token;
+    }
 }
