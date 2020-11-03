@@ -6,7 +6,7 @@
     <PackageId>PhenixRTS.EdgeAuth</PackageId>
     <Authors>tgronk;sempi</Authors>
     <Title>Phenix EdgeAuth Digest Tokens Library</Title>
-    <Version>1.2.4</Version>
+    <Version>1.2.5</Version>
      <Description>Easily generate secure digest tokens to use with the Phenix platform without requiring any networking activity.</Description>
     <Copyright>Copyright (c) 2020 Phenix Real Time Solutions, Inc.</Copyright>
     <PackageLicenseFile>LICENSE.md</PackageLicenseFile>

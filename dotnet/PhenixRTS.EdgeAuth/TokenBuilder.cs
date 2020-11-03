@@ -34,6 +34,23 @@ namespace PhenixRTS.EdgeAuth
         /// <summary>
         /// The application ID used to sign the token (required).
         /// </summary>
+        /// <param name="uri">The application ID to sign the token</param>
+        /// <returns>Itself</returns>
+        public TokenBuilder WithUri(string uri)
+        {
+            if (uri == null)
+            {
+                throw new Exception("URI must not be null");
+            }
+
+            _tokenBuilder.Add(DigestTokens.FIELD_URI, uri);
+
+            return this;
+        }
+
+        /// <summary>
+        /// The application ID used to sign the token (required).
+        /// </summary>
         /// <param name="applicationId">The application ID to sign the token</param>
         /// <returns>Itself</returns>
         public TokenBuilder WithApplicationId(string applicationId)
@@ -312,6 +329,11 @@ namespace PhenixRTS.EdgeAuth
             _tagBuilder.Add(tag);
 
             return this;
+        }
+
+        public string GetValue()
+        {
+            return _tokenBuilder.ToString();
         }
 
         /// <summary>

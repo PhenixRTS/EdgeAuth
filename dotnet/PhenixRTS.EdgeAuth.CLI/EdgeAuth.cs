@@ -7,6 +7,9 @@ namespace PhenixRTS.EdgeAuth.CLI
 {
     public class EdgeAuth
     {
+        [Argument('y', "uri", "The backend URI")]
+        private static string Uri { get; set; }
+
         [Argument('u', "applicationId", "The application ID")]
         private static string ApplicationId { get; set; }
 
@@ -94,6 +97,9 @@ namespace PhenixRTS.EdgeAuth.CLI
 
                 try
                 {
+                    string tokenObjectJson = tokenBuilder.GetValue();
+                    Console.WriteLine(tokenObjectJson);
+
                     string token = tokenBuilder.Build();
                     Console.WriteLine(token);
                 }
@@ -111,6 +117,11 @@ namespace PhenixRTS.EdgeAuth.CLI
 
         private static void BuildToken(TokenBuilder tokenBuilder)
         {
+            if (!string.IsNullOrEmpty(Uri))
+            {
+                tokenBuilder.WithUri(Uri);
+            }
+
             if (!string.IsNullOrEmpty(ExpiresAt))
             {
                 tokenBuilder.ExpiresAt(DateTimeOffset.FromUnixTimeMilliseconds(Convert.ToInt64(ExpiresAt, 10)).UtcDateTime);

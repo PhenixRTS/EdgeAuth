@@ -64,6 +64,7 @@ namespace PhenixRTS.EdgeAuth
         private const string FIELD_DIGEST = "digest";
         private const string FIELD_TOKEN = "token";
         public const string FIELD_EXPIRES = "expires";
+        public const string FIELD_URI = "uri";
 
         /// <summary>
         /// Check if a value is a valid digest token.
