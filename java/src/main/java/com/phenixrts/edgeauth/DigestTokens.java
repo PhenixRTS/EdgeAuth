@@ -97,6 +97,7 @@ public final class DigestTokens {
   private static final String FIELD_DIGEST = "digest";
   private static final String FIELD_TOKEN = "token";
   public static final String FIELD_EXPIRES = "expires";
+  public static final String FIELD_URI = "uri";
   private static final String HMAC_ALGORITHM = "HmacSHA512";
 
   /**

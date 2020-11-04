@@ -16,11 +16,19 @@
 
 package com.phenixrts.edgeauth;
 
+import java.io.StringWriter;
 import java.net.InetAddress;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
+import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
+import javax.json.JsonWriter;
+import javax.json.JsonWriterFactory;
+import javax.json.stream.JsonGenerator;
 
 import org.jetbrains.annotations.Contract;
 
@@ -40,12 +48,29 @@ public final class TokenBuilder {
   private final JsonObjectBuilder tokenBuilder;
   private JsonArrayBuilder capabilitiesBuilder;
   private JsonArrayBuilder tagBuilder;
+  private JsonObject tokenObject;
 
   /**
    * Token Builder Constructor.
    */
   public TokenBuilder() {
     this.tokenBuilder = Json.createObjectBuilder();
+  }
+
+  /**
+   * The backend URI used to sign the token (optional).
+   *
+   * @param uri the backend URI
+   * @return itself
+   */
+  @Contract("null -> fail, _ -> this")
+  public TokenBuilder withUri(String uri) {
+    if (uri == null) {
+      throw new RuntimeException("URI must not be null");
+    }
+    this.tokenBuilder.add(DigestTokens.FIELD_URI, uri);
+
+    return this;
   }
 
   /**
@@ -335,6 +360,24 @@ public final class TokenBuilder {
   }
 
   /**
+   * Get the token as a JSON.
+   *
+   * @return the token as a JSON string
+   */
+  public String getValue() {
+    Map<String, Object> writerOptions = new HashMap<>();
+    StringWriter stringWriter = new StringWriter();
+
+    writerOptions.put(JsonGenerator.PRETTY_PRINTING, true);
+    JsonWriterFactory writerFactory = Json.createWriterFactory(writerOptions);
+    JsonWriter jsonWriter = writerFactory.createWriter(stringWriter);
+    jsonWriter.writeObject(this.tokenObject);
+    jsonWriter.close();
+
+    return stringWriter.toString();
+  }
+
+  /**
    * Build the signed token.
    *
    * @return the signed token that can be used with the Phenix platform
@@ -350,6 +393,9 @@ public final class TokenBuilder {
       this.tokenBuilder.add(FIELD_APPLY_TAGS, this.tagBuilder);
     }
 
-    return digestTokens.signAndEncode(this.applicationId, this.secret, this.tokenBuilder.build());
+    // Unfortunately, the build() method can only be called once. Must save the result for getValue().
+    this.tokenObject = this.tokenBuilder.build();
+
+    return digestTokens.signAndEncode(this.applicationId, this.secret, this.tokenObject);
   }
 }

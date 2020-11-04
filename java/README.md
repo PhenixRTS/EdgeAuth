@@ -7,13 +7,13 @@ Easily generate secure digest tokens to use with the Phenix platform without req
 To install the Phenix Edge Authorization Digest Token library with gradle, add the following depencency line to your `build.gradle`:
 
 ```Groovy
-implementation 'com.phenixrts.edgeauth:edge-auth:1.2.4'
+implementation 'com.phenixrts.edgeauth:edge-auth:1.2.5'
 ```
 
 OR
 
 ```Groovy
-compile group: 'com.phenixrts.edgeauth', name: 'edge-auth', version: '1.2.4'
+compile group: 'com.phenixrts.edgeauth', name: 'edge-auth', version: '1.2.5'
 ```
 
 ### Bundled UberJar
@@ -21,7 +21,7 @@ compile group: 'com.phenixrts.edgeauth', name: 'edge-auth', version: '1.2.4'
 To install the Phenix Edge Authorization Digest Token uberjar bundled with all its dependencies, add the following dependency to your `build.gradle`:
 
 ```Groovy
-compile group: 'com.phenixrts.edgeauth', name: 'edge-auth', version: '1.2.4', clasifier: 'bundle'
+compile group: 'com.phenixrts.edgeauth', name: 'edge-auth', version: '1.2.5', classifier: 'bundle'
 ```
 
 ## Java Example

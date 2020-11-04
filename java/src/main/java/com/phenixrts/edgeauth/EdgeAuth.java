@@ -17,7 +17,6 @@
 package com.phenixrts.edgeauth;
 
 import java.util.Date;
-
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -59,6 +58,10 @@ public class EdgeAuth {
     final TokenBuilder tokenBuilder = new TokenBuilder()
         .withApplicationId(cmd.getOptionValue("applicationId"))
         .withSecret(cmd.getOptionValue("secret"));
+
+    if (cmd.hasOption("uri")) {
+      tokenBuilder.withUri(cmd.getOptionValue("uri"));
+    }
 
     if (cmd.hasOption("expiresAt")) {
       tokenBuilder.expiresAt(new Date(Long.parseLong(cmd.getOptionValue("expiresAt"), 10)));
@@ -121,8 +124,10 @@ public class EdgeAuth {
     }
 
     final String token;
+    final String tokenObjectJson;
     try {
       token = tokenBuilder.build();
+      tokenObjectJson = tokenBuilder.getValue();
     } catch (Exception e) {
       System.err.println(e.getMessage());
       System.exit(7);
@@ -130,12 +135,14 @@ public class EdgeAuth {
       return;
     }
 
+    System.out.println(tokenObjectJson);
     System.out.println(token);
   }
 
   private static Options createOptions() {
     final Options options = new Options();
 
+    options.addOption("y", "uri", true, "The backend URI");
     options.addOption("u", "applicationId", true, "The application ID");
     options.addOption("w", "secret", true, "The application secret");
     options.addOption("l", "expiresInSeconds", true, "Token life time in seconds");
