@@ -5,6 +5,8 @@ import argparse
 import sys
 
 from sys import version_info
+from datetime import datetime
+import pytz
 
 from .token_builder import TokenBuilder
 
@@ -98,7 +100,9 @@ def main():
         token.with_uri(args.uri)
 
     if args.expires_at is not None:
-        token.expires_at(args.expires_at)
+        expires_at = datetime.utcfromtimestamp(args.expires_at/1000.0)
+        utc_expires_at = expires_at.replace(tzinfo=pytz.UTC)
+        token.expires_at(utc_expires_at)
     else:
         token.expires_in_seconds(args.expires_in_seconds)
 

@@ -18,12 +18,12 @@ test_requirements = [
 
 setup(
     name='phenix-edge-auth',
-    version='1.2.5',
+    version='1.2.6',
     description='Easily generate secure digest tokens to use with the Phenix platform',
     long_description=long_description,
     long_description_content_type="text/markdown",
     url='https://github.com/PhenixRTS/EdgeAuth/python',
-    author='Tim Gronkowski',
+    author='Tim Gronkowski, Brandon Drake',
     author_email='tim.gronkowski@phenixrts.com',
     license='Apache-2.0',
     packages=find_packages(include=['edgeauth', 'edgeauth.*']),

@@ -1,4 +1,5 @@
-from datetime import datetime, timezone
+from time import time
+from datetime import datetime
 
 from .digest_tokens import DigestTokens
 
@@ -80,25 +81,24 @@ class TokenBuilder:
         Keyword arguments:
         seconds -- the time in seconds
         """
-        if not isinstance(seconds, int) and not isinstance(seconds, float):
-            raise TypeError('Seconds must be a float or an int')
+        if not isinstance(seconds, int):
+            raise TypeError('Seconds must be an int')
 
-        self.token['expires'] = \
-            (datetime.now().replace(tzinfo=timezone.utc).timestamp() + seconds) * 1000
+        self.token['expires'] = int((datetime.now().timestamp() + seconds)*1000.0)
 
         return self
 
-    def expires_at(self, timestamp):
-        """Expires the token at the given timestamp
+    def expires_at(self, ex_datetime):
+        """Expires the token at the given dateime
         NOTE: Your time must be synced with the atomic clock for expiration time to work properly.
 
         Keyword arguments:
-        timestamp -- the time as a timestamp
+        datetime -- the time as a datetime
         """
-        if not isinstance(timestamp, int) and not isinstance(timestamp, float):
-            raise TypeError('Timestamp must be a float or an int')
+        if not isinstance(ex_datetime, datetime):
+            raise TypeError('datetime must be a valid date')
 
-        self.token['expires'] = timestamp
+        self.token['expires'] = int(ex_datetime.timestamp()*1000.0)
 
         return self
 

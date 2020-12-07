@@ -1,4 +1,6 @@
 import pytest
+from datetime import datetime
+import pytz
 
 from edgeauth.digest_tokens import DigestTokens
 from edgeauth.token_builder import TokenBuilder
@@ -13,7 +15,7 @@ class TestWhenVerifyingATokenForATag:
             .with_application_id('my-application-id') \
             .with_secret('my-secret') \
             .with_uri('https://my-custom-backend.example.org') \
-            .expires_at(1000) \
+            .expires_at(datetime.utcfromtimestamp(1.0).replace(tzinfo=pytz.UTC)) \
             .for_channel_alias('my-channel') \
             .for_streaming_only() \
             .build()
