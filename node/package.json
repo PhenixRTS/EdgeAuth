@@ -13,12 +13,13 @@
     "lint": "eslint . --cache --ignore-path .gitignore",
     "lint:fix": "eslint . --fix --ignore-path .gitignore"
   },
-  "dependencies": {},
+  "dependencies": {
+    "commander": "^7.2.0"
+  },
   "engines": {
     "node": ">=10.15.3"
   },
   "devDependencies": {
-    "commander": "^7.2.0",
     "eslint": "6.1.0",
     "eslint-plugin-notice": "0.8.8",
     "jest": "^24.9.0",
