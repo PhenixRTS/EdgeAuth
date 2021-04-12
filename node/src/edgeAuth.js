@@ -36,74 +36,75 @@ program
   .option('-m, --room <roomId>', '[STREAMING] Token is limited to the given room')
   .option('-n, --roomAlias <roomAlias>', '[STREAMING] Token is limited to the given room alias')
   .option('-t, --tag <tag>', '[STREAMING] Token is limited to the given origin stream tag')
-  .option('-r, --applyTag <applyTag>', '[REPORTING] Apply tag to the new stream');
+  .option('-r, --applyTag <applyTag...>', '[REPORTING] Apply tag to the new stream');
 
 program.parse(process.argv);
 
+const options = program.opts();
 const tokenBuilder = new TokenBuilder()
-  .withApplicationId(program.applicationId)
-  .withSecret(program.secret);
+  .withApplicationId(options.applicationId)
+  .withSecret(options.secret);
 
-if (program.uri) {
-  tokenBuilder.withUri(program.uri);
+if (options.uri) {
+  tokenBuilder.withUri(options.uri);
 }
 
-if (program.expiresAt !== undefined) {
-  tokenBuilder.expiresAt(new Date(parseInt(program.expiresAt, 10)));
+if (options.expiresAt !== undefined) {
+  tokenBuilder.expiresAt(new Date(parseInt(options.expiresAt, 10)));
 } else {
-  tokenBuilder.expiresInSeconds(parseInt(program.expiresInSeconds || defaultExpirationInSeconds, 10));
+  tokenBuilder.expiresInSeconds(parseInt(options.expiresInSeconds || defaultExpirationInSeconds, 10));
 }
 
-if (program.authenticationOnly) {
+if (options.authenticationOnly) {
   tokenBuilder.forAuthenticateOnly();
 }
 
-if (program.streamingOnly) {
+if (options.streamingOnly) {
   tokenBuilder.forStreamingOnly();
 }
 
-if (program.publishingOnly) {
+if (options.publishingOnly) {
   tokenBuilder.forPublishingOnly();
 }
 
-if (program.capabilities) {
-  program.capabilities.split(',').forEach((capability) => tokenBuilder.withCapability(capability));
+if (options.capabilities) {
+  options.capabilities.split(',').forEach((capability) => tokenBuilder.withCapability(capability));
 }
 
-if (program.sessionId) {
-  tokenBuilder.forSession(program.sessionId);
+if (options.sessionId) {
+  tokenBuilder.forSession(options.sessionId);
 }
 
-if (program.remoteAddress) {
-  tokenBuilder.forRemoteAddress(program.remoteAddress);
+if (options.remoteAddress) {
+  tokenBuilder.forRemoteAddress(options.remoteAddress);
 }
 
-if (program.originStreamId) {
-  tokenBuilder.forOriginStream(program.originStreamId);
+if (options.originStreamId) {
+  tokenBuilder.forOriginStream(options.originStreamId);
 }
 
-if (program.channel) {
-  tokenBuilder.forChannel(program.channel);
+if (options.channel) {
+  tokenBuilder.forChannel(options.channel);
 }
 
-if (program.channelAlias) {
-  tokenBuilder.forChannelAlias(program.channelAlias);
+if (options.channelAlias) {
+  tokenBuilder.forChannelAlias(options.channelAlias);
 }
 
-if (program.room) {
-  tokenBuilder.forRoom(program.room);
+if (options.room) {
+  tokenBuilder.forRoom(options.room);
 }
 
-if (program.roomAlias) {
-  tokenBuilder.forRoomAlias(program.roomAlias);
+if (options.roomAlias) {
+  tokenBuilder.forRoomAlias(options.roomAlias);
 }
 
-if (program.tag) {
-  tokenBuilder.forTag(program.tag);
+if (options.tag) {
+  tokenBuilder.forTag(options.tag);
 }
 
-if (program.applyTag) {
-  tokenBuilder.applyTag(program.applyTag);
+if (options.applyTag) {
+  tokenBuilder.applyTags(options.applyTag);
 }
 
 const tokenObject = tokenBuilder.value();
