@@ -104,7 +104,9 @@ if (options.tag) {
 }
 
 if (options.applyTag) {
-  tokenBuilder.applyTags(options.applyTag);
+  for (var i = 0; i < options.applyTag.length; i++) {
+    tokenBuilder.applyTag(options.applyTag[i]);
+  }
 }
 
 const tokenObject = tokenBuilder.value();

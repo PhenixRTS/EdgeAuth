@@ -302,20 +302,6 @@ TokenBuilder.prototype.applyTag = function(tag) {
 };
 
 /**
- * Apply the tag to the stream when it is setup. (optional)
- *
- * @param tags array of tags to be added to the new stream
- * @returns {TokenBuilder} itself
- */
-TokenBuilder.prototype.applyTags = function(tags) {
-  for (var i = 0; i < tags.length; i++) {
-    this.applyTag(tags[i]);
-  }
-
-  return this;
-};
-
-/**
  * Build the signed token
  *
  * @returns {String} the signed token that can be used with the Phenix platform
