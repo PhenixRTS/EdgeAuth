@@ -1,6 +1,6 @@
 {
   "name": "phenix-edge-auth",
-  "version": "1.2.5",
+  "version": "1.2.6",
   "license": "Apache-2.0",
   "private": false,
   "main": "src/TokenBuilder.js",
@@ -18,7 +18,7 @@
     "node": ">=10.15.3"
   },
   "devDependencies": {
-    "commander": "^3.0.0",
+    "commander": "^7.2.0",
     "eslint": "6.1.0",
     "eslint-plugin-notice": "0.8.8",
     "jest": "^24.9.0",
