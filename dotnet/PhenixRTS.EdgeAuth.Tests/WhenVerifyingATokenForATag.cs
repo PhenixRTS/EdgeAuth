@@ -31,7 +31,7 @@ namespace PhenixRTS.EdgeAuth.Tests
             Assert.True(result.IsVerified());
             Assert.Equal(ECode.VERIFIED, result.GetCode());
             Assert.NotNull(result.GetValue());
-            Assert.Equal("my-tag=awesome", result.GetValue().GetValue("requiredTag").ToString());
+            Assert.Equal("my-tag=awesome", result.GetValue().RootElement.GetProperty("requiredTag").ToString());
         }
 
         [Fact]

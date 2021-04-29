@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
+using System.Linq;
 using Xunit;
 
 namespace PhenixRTS.EdgeAuth.Tests
@@ -33,9 +34,9 @@ namespace PhenixRTS.EdgeAuth.Tests
             Assert.True(result.IsVerified());
             Assert.Equal(ECode.VERIFIED, result.GetCode());
             Assert.NotNull(result.GetValue());
-            Assert.Equal("channelAlias:my-channel", result.GetValue().GetValue("requiredTag").ToString());
-            Assert.Single(result.GetValue().GetValue("applyTags") as JArray);
-            Assert.Equal("customer1", (result.GetValue().GetValue("applyTags") as JArray)[0].ToString());
+            Assert.Equal("channelAlias:my-channel", result.GetValue().RootElement.GetProperty("requiredTag").ToString());
+            Assert.Single(result.GetValue().RootElement.GetProperty("applyTags").EnumerateArray() );
+            Assert.Equal("customer1", result.GetValue().RootElement.GetProperty("applyTags").EnumerateArray().ToList()[0].ToString());
         }
 
         [Fact]

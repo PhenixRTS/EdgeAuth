@@ -1,8 +1,8 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
+using System.IO;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.Json;
 
 namespace PhenixRTS.EdgeAuth
 {
@@ -15,20 +15,20 @@ namespace PhenixRTS.EdgeAuth
         {
             private readonly bool _isVerified;
             private readonly ECode _code;
-            private readonly JObject _value;
+            private readonly JsonDocument value;
 
             public VerifyAndDecodeResult(ECode code)
             {
                 _isVerified = false;
                 _code = code;
-                _value = null;
+                value = null;
             }
 
-            public VerifyAndDecodeResult(JObject value)
+            public VerifyAndDecodeResult(JsonDocument valuedoc)
             {
                 _isVerified = true;
                 _code = ECode.VERIFIED;
-                _value = value;
+                value = valuedoc;
             }
 
             /// <summary>
@@ -53,9 +53,9 @@ namespace PhenixRTS.EdgeAuth
             /// Get the value.
             /// </summary>
             /// <returns>The verified JSON object</returns>
-            public JObject GetValue()
+            public JsonDocument GetValue()
             {
-                return _value;
+                return value;
             }
         }
 
@@ -112,15 +112,16 @@ namespace PhenixRTS.EdgeAuth
             }
 
             string decodedAsString = Encoding.UTF8.GetString(decodedAsBytes);
-            JObject info;
+
+            JsonDocument info;
 
             try
             {
                 try
                 {
-                    info = JObject.Parse(decodedAsString);
+                    info = JsonDocument.Parse(decodedAsString);
                 }
-                catch (JsonReaderException)
+                catch (JsonException ex)
                 {
                     return new VerifyAndDecodeResult(ECode.BAD_TOKEN);
                 }
@@ -129,7 +130,7 @@ namespace PhenixRTS.EdgeAuth
 
                 foreach (string field in stringFields)
                 {
-                    if (info.ContainsKey(field) && info.GetValue(field).Type == JTokenType.String)
+                    if (info.RootElement.TryGetProperty(field, out _) && info.RootElement.GetProperty(field).ValueKind == JsonValueKind.String)
                     {
                         continue;
                     }
@@ -137,13 +138,13 @@ namespace PhenixRTS.EdgeAuth
                     return new VerifyAndDecodeResult(ECode.BAD_TOKEN);
                 }
 
-                string applicationId = info.GetValue(FIELD_APPLICATION_ID).ToString();
-                string token = info.GetValue(FIELD_TOKEN).ToString();
+                string applicationId = info.RootElement.GetProperty(FIELD_APPLICATION_ID).GetString();
+                string token = info.RootElement.GetProperty(FIELD_TOKEN).GetString();
 
                 try
                 {
                     string digestAsString = CalculateDigest(applicationId, secret, token);
-                    string digest = info.GetValue(FIELD_DIGEST).ToString();
+                    string digest = info.RootElement.GetProperty(FIELD_DIGEST).GetString();
 
                     if (!digestAsString.Equals(digest))
                     {
@@ -155,27 +156,34 @@ namespace PhenixRTS.EdgeAuth
                     return new VerifyAndDecodeResult(ECode.UNSUPPORTED);
                 }
 
-                JObject value;
+                JsonDocument value;
 
                 try
                 {
-                    value = JObject.Parse(token);
+                    value = JsonDocument.Parse(token);
                 }
-                catch (JsonReaderException)
+                catch (JsonException)
                 {
                     return new VerifyAndDecodeResult(ECode.BAD_TOKEN);
                 }
 
-                JObject result = new JObject();
-
-                foreach (var property in value)
+                VerifyAndDecodeResult result;
+                using (var memoryStream = new MemoryStream())
                 {
-                    result.Add(property.Key, property.Value);
-                }
+                    Utf8JsonWriter JsonWriter = new Utf8JsonWriter(memoryStream);
+                    JsonWriter.WriteStartObject();
+                    foreach (var testDataElement in value.RootElement.EnumerateObject())
+                    {
+                        testDataElement.WriteTo(JsonWriter);
+                    }
+                    WriteStringProperty(JsonWriter, FIELD_APPLICATION_ID, applicationId);
+                    JsonWriter.WriteEndObject();
+                    JsonWriter.Flush();
 
-                result.Add(FIELD_APPLICATION_ID, applicationId);
+                    result = new VerifyAndDecodeResult(JsonDocument.Parse(Encoding.UTF8.GetString(memoryStream.ToArray())));
+                }                   
 
-                return new VerifyAndDecodeResult(result);
+                return result;
             }
             catch (Exception e)
             {
@@ -183,14 +191,13 @@ namespace PhenixRTS.EdgeAuth
             }
         }
 
-        /// <summary>
-        /// Signs and encodes a digest token.
-        /// </summary>
-        /// <param name="applicationId">The application ID used to sign the token</param>
-        /// <param name="secret">The shared secret used to sign the token</param>
-        /// <param name="token">The raw token object to sign</param>
-        /// <returns>The signed and encoded digest token</returns>
-        public string SignAndEncode(string applicationId, string secret, JObject token)
+        private void WriteStringProperty(Utf8JsonWriter JsonWriter, string Property, string Value)
+        {
+            JsonWriter.WritePropertyName(Property);
+            JsonWriter.WriteStringValue(JsonEncodedText.Encode(Value, System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping));
+        }
+
+        public string SignAndEncode(string applicationId, string secret, JsonDocument token)
         {
             if (applicationId == null)
             {
@@ -207,12 +214,12 @@ namespace PhenixRTS.EdgeAuth
                 throw new Exception("Token must not be null");
             }
 
-            if (!token.ContainsKey(FIELD_EXPIRES) || token.GetValue(FIELD_EXPIRES).Type != JTokenType.Integer)
+            if (!token.RootElement.TryGetProperty(FIELD_EXPIRES, out _) || token.RootElement.GetProperty(FIELD_EXPIRES).ValueKind != JsonValueKind.Number)
             {
                 throw new Exception("Token must have an expiration (milliseconds since UNIX epoch)");
             }
 
-            if (token.ContainsKey(FIELD_APPLICATION_ID))
+            if (token.RootElement.TryGetProperty(FIELD_APPLICATION_ID, out _))
             {
                 throw new Exception("Token should not have an application ID property");
             }
@@ -221,7 +228,7 @@ namespace PhenixRTS.EdgeAuth
 
             try
             {
-                tokenAsString = token.ToString().Replace("\r", "").Replace("\n", "").Replace(" ", "");
+                tokenAsString = token.RootElement.ToString().Replace("\r", "").Replace("\n", "").Replace(" ", "");
             }
             catch (Exception e)
             {
@@ -239,16 +246,26 @@ namespace PhenixRTS.EdgeAuth
                 throw e;
             }
 
-            JObject info = new JObject();
-            info.Add(FIELD_APPLICATION_ID, applicationId);
-            info.Add(FIELD_DIGEST, digest);
-            info.Add(FIELD_TOKEN, tokenAsString);
+            JsonDocument result;
+            using (var memoryStream = new MemoryStream())
+            {
+                Utf8JsonWriter JsonWriter = new Utf8JsonWriter(memoryStream);
+                JsonWriter.WriteStartObject();
+                WriteStringProperty(JsonWriter, FIELD_APPLICATION_ID, applicationId);
+                WriteStringProperty(JsonWriter, FIELD_DIGEST, digest);
+                WriteStringProperty(JsonWriter, FIELD_TOKEN, tokenAsString);
+                JsonWriter.WriteEndObject();
+                JsonWriter.Flush();
+                result = JsonDocument.Parse(Encoding.UTF8.GetString(memoryStream.ToArray()));
+            }
+
+           
 
             string decodedDigestTokenAsString;
 
             try
             {
-                decodedDigestTokenAsString = info.ToString().Replace("\r", "").Replace("\n", "").Replace(" ", ""); ;
+                decodedDigestTokenAsString = result.RootElement.ToString().Replace("\r", "").Replace("\n", "").Replace(" ", ""); ;
             }
             catch (Exception e)
             {
