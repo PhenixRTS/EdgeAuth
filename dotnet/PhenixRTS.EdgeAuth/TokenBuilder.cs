@@ -22,8 +22,8 @@ namespace PhenixRTS.EdgeAuth
 
         private string _applicationId;
         private string _secret;
-        private MemoryStream memoryStream1 = new MemoryStream();
-        private Utf8JsonWriter utf8JsonWriter1;
+        private MemoryStream JsonMemoryStream = new MemoryStream();
+        private Utf8JsonWriter JsonWriter;
         private List<string> capabilitiesBuilder;
         private List<string> tagBuilder;
 
@@ -32,42 +32,42 @@ namespace PhenixRTS.EdgeAuth
         /// </summary>
         public TokenBuilder()
         {
-            utf8JsonWriter1 = new Utf8JsonWriter(memoryStream1);
-            utf8JsonWriter1.WriteStartObject();
+            JsonWriter = new Utf8JsonWriter(JsonMemoryStream);
+            JsonWriter.WriteStartObject();
         }
         private void WriteStringProperty(string Property, string Value)
         {
-            utf8JsonWriter1.WritePropertyName(Property);
-            utf8JsonWriter1.WriteStringValue(Value);
+            JsonWriter.WritePropertyName(Property);
+            JsonWriter.WriteStringValue(Value);
         }
         private void WriteNumberProperty(string Property, long Value)
         {
-            utf8JsonWriter1.WritePropertyName(Property);
-            utf8JsonWriter1.WriteNumberValue(Value);
+            JsonWriter.WritePropertyName(Property);
+            JsonWriter.WriteNumberValue(Value);
         }
         private void WriteBoolProperty(string Property, bool Value)
         {
-            utf8JsonWriter1.WritePropertyName(Property);
-            utf8JsonWriter1.WriteBooleanValue(Value);
+            JsonWriter.WritePropertyName(Property);
+            JsonWriter.WriteBooleanValue(Value);
         }
 
         private void WriteCapabilities()
         {
-            utf8JsonWriter1.WriteStartArray(FIELD_CAPABILITIES);
+            JsonWriter.WriteStartArray(FIELD_CAPABILITIES);
             foreach (var capability in capabilitiesBuilder)
             {
-                utf8JsonWriter1.WriteStringValue(capability);
+                JsonWriter.WriteStringValue(capability);
             }
-            utf8JsonWriter1.WriteEndArray();
+            JsonWriter.WriteEndArray();
         }
         private void WriteTags()
         {
-            utf8JsonWriter1.WriteStartArray(FIELD_APPLY_TAGS);
+            JsonWriter.WriteStartArray(FIELD_APPLY_TAGS);
             foreach (var tag in tagBuilder)
             {
-                utf8JsonWriter1.WriteStringValue(tag);
+                JsonWriter.WriteStringValue(tag);
             }
-            utf8JsonWriter1.WriteEndArray();
+            JsonWriter.WriteEndArray();
         }
         /// <summary>
         /// The application ID used to sign the token (required).
@@ -390,10 +390,10 @@ namespace PhenixRTS.EdgeAuth
             {
                 WriteTags();
             }
-            utf8JsonWriter1.WriteEndObject();
-            utf8JsonWriter1.Flush();
+            JsonWriter.WriteEndObject();
+            JsonWriter.Flush();
 
-            var resultJson = Encoding.UTF8.GetString(memoryStream1.ToArray());
+            var resultJson = Encoding.UTF8.GetString(JsonMemoryStream.ToArray());
             tokenBuilder = JsonDocument.Parse(resultJson);
             var res = digestTokensTextJson.SignAndEncode(_applicationId, _secret, tokenBuilder);
 

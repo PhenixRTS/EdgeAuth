@@ -170,15 +170,15 @@ namespace PhenixRTS.EdgeAuth
                 VerifyAndDecodeResult result;
                 using (var memoryStream = new MemoryStream())
                 {
-                    Utf8JsonWriter utf8JsonWriter1 = new Utf8JsonWriter(memoryStream);
-                    utf8JsonWriter1.WriteStartObject();
+                    Utf8JsonWriter JsonWriter = new Utf8JsonWriter(memoryStream);
+                    JsonWriter.WriteStartObject();
                     foreach (var testDataElement in value.RootElement.EnumerateObject())
                     {
-                        testDataElement.WriteTo(utf8JsonWriter1);
+                        testDataElement.WriteTo(JsonWriter);
                     }
-                    WriteStringProperty(utf8JsonWriter1, FIELD_APPLICATION_ID, applicationId);
-                    utf8JsonWriter1.WriteEndObject();
-                    utf8JsonWriter1.Flush();
+                    WriteStringProperty(JsonWriter, FIELD_APPLICATION_ID, applicationId);
+                    JsonWriter.WriteEndObject();
+                    JsonWriter.Flush();
 
                     result = new VerifyAndDecodeResult(JsonDocument.Parse(Encoding.UTF8.GetString(memoryStream.ToArray())));
                 }                   
@@ -191,10 +191,10 @@ namespace PhenixRTS.EdgeAuth
             }
         }
 
-        private void WriteStringProperty(Utf8JsonWriter utf8JsonWriter1, string Property, string Value)
+        private void WriteStringProperty(Utf8JsonWriter JsonWriter, string Property, string Value)
         {
-            utf8JsonWriter1.WritePropertyName(Property);
-            utf8JsonWriter1.WriteStringValue(JsonEncodedText.Encode(Value, System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping));
+            JsonWriter.WritePropertyName(Property);
+            JsonWriter.WriteStringValue(JsonEncodedText.Encode(Value, System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping));
         }
 
         public string SignAndEncode(string applicationId, string secret, JsonDocument token)
@@ -249,13 +249,13 @@ namespace PhenixRTS.EdgeAuth
             JsonDocument result;
             using (var memoryStream = new MemoryStream())
             {
-                Utf8JsonWriter utf8JsonWriter1 = new Utf8JsonWriter(memoryStream);
-                utf8JsonWriter1.WriteStartObject();
-                WriteStringProperty(utf8JsonWriter1, FIELD_APPLICATION_ID, applicationId);
-                WriteStringProperty(utf8JsonWriter1, FIELD_DIGEST, digest);
-                WriteStringProperty(utf8JsonWriter1, FIELD_TOKEN, tokenAsString);
-                utf8JsonWriter1.WriteEndObject();
-                utf8JsonWriter1.Flush();
+                Utf8JsonWriter JsonWriter = new Utf8JsonWriter(memoryStream);
+                JsonWriter.WriteStartObject();
+                WriteStringProperty(JsonWriter, FIELD_APPLICATION_ID, applicationId);
+                WriteStringProperty(JsonWriter, FIELD_DIGEST, digest);
+                WriteStringProperty(JsonWriter, FIELD_TOKEN, tokenAsString);
+                JsonWriter.WriteEndObject();
+                JsonWriter.Flush();
                 result = JsonDocument.Parse(Encoding.UTF8.GetString(memoryStream.ToArray()));
             }
 
