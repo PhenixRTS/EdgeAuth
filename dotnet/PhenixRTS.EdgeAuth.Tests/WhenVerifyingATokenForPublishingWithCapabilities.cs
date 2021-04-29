@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
+using System.Linq;
 using Xunit;
 
 namespace PhenixRTS.EdgeAuth.Tests
@@ -33,10 +34,10 @@ namespace PhenixRTS.EdgeAuth.Tests
             Assert.True(result.IsVerified());
             Assert.Equal(ECode.VERIFIED, result.GetCode());
             Assert.NotNull(result.GetValue());
-            Assert.Equal("publish", result.GetValue().GetValue("type").ToString());
-            Assert.Equal(2, (result.GetValue().GetValue("capabilities") as JArray).Count);
-            Assert.Equal("multi-bitrate", (result.GetValue().GetValue("capabilities") as JArray)[0].ToString());
-            Assert.Equal("streaming", (result.GetValue().GetValue("capabilities") as JArray)[1].ToString());
+            Assert.Equal("publish", result.GetValue().RootElement.GetProperty("type").ToString());
+            Assert.Equal(2, result.GetValue().RootElement.GetProperty("capabilities").EnumerateArray().ToList().Count);
+            Assert.Equal("multi-bitrate", result.GetValue().RootElement.GetProperty("capabilities").EnumerateArray().ToList()[0].ToString());
+            Assert.Equal("streaming", result.GetValue().RootElement.GetProperty("capabilities").EnumerateArray().ToList()[1].ToString());
         }
 
         [Fact]

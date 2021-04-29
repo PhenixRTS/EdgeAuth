@@ -31,8 +31,8 @@ namespace PhenixRTS.EdgeAuth.Tests
             Assert.True(result.IsVerified());
             Assert.Equal(ECode.VERIFIED, result.GetCode());
             Assert.NotNull(result.GetValue());
-            Assert.Equal("publish", result.GetValue().GetValue("type").ToString());
-            Assert.Equal("channelAlias:my-channel", result.GetValue().GetValue("requiredTag").ToString());
+            Assert.Equal("publish", result.GetValue().RootElement.GetProperty("type").ToString());
+            Assert.Equal("channelAlias:my-channel", result.GetValue().RootElement.GetProperty("requiredTag").ToString());
         }
 
         [Fact]

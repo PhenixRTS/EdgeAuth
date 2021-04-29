@@ -32,8 +32,8 @@ namespace PhenixRTS.EdgeAuth.Tests
             Assert.True(result.IsVerified());
             Assert.Equal(ECode.VERIFIED, result.GetCode());
             Assert.NotNull(result.GetValue());
-            Assert.Equal("https://my-custom-backend.example.org", result.GetValue().GetValue("uri").ToString());
-            Assert.Equal("channelAlias:my-channel", result.GetValue().GetValue("requiredTag").ToString());
+            Assert.Equal("https://my-custom-backend.example.org", result.GetValue().RootElement.GetProperty("uri").ToString());
+            Assert.Equal("channelAlias:my-channel", result.GetValue().RootElement.GetProperty("requiredTag").ToString());
         }
 
         [Fact]

@@ -1,6 +1,9 @@
-﻿using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Net;
+using System.Text;
+using System.Text.Json;
 
 namespace PhenixRTS.EdgeAuth
 {
@@ -19,18 +22,53 @@ namespace PhenixRTS.EdgeAuth
 
         private string _applicationId;
         private string _secret;
-        private readonly JObject _tokenBuilder;
-        private JArray _capabilitiesBuilder;
-        private JArray _tagBuilder;
+        private MemoryStream memoryStream1 = new MemoryStream();
+        private Utf8JsonWriter utf8JsonWriter1;
+        private List<string> capabilitiesBuilder;
+        private List<string> tagBuilder;
 
         /// <summary>
         /// Token Builder Constructor.
         /// </summary>
         public TokenBuilder()
         {
-            _tokenBuilder = new JObject();
+            utf8JsonWriter1 = new Utf8JsonWriter(memoryStream1);
+            utf8JsonWriter1.WriteStartObject();
+        }
+        private void WriteStringProperty(string Property, string Value)
+        {
+            utf8JsonWriter1.WritePropertyName(Property);
+            utf8JsonWriter1.WriteStringValue(Value);
+        }
+        private void WriteNumberProperty(string Property, long Value)
+        {
+            utf8JsonWriter1.WritePropertyName(Property);
+            utf8JsonWriter1.WriteNumberValue(Value);
+        }
+        private void WriteBoolProperty(string Property, bool Value)
+        {
+            utf8JsonWriter1.WritePropertyName(Property);
+            utf8JsonWriter1.WriteBooleanValue(Value);
         }
 
+        private void WriteCapabilities()
+        {
+            utf8JsonWriter1.WriteStartArray(FIELD_CAPABILITIES);
+            foreach (var capability in capabilitiesBuilder)
+            {
+                utf8JsonWriter1.WriteStringValue(capability);
+            }
+            utf8JsonWriter1.WriteEndArray();
+        }
+        private void WriteTags()
+        {
+            utf8JsonWriter1.WriteStartArray(FIELD_APPLY_TAGS);
+            foreach (var tag in tagBuilder)
+            {
+                utf8JsonWriter1.WriteStringValue(tag);
+            }
+            utf8JsonWriter1.WriteEndArray();
+        }
         /// <summary>
         /// The application ID used to sign the token (required).
         /// </summary>
@@ -43,10 +81,10 @@ namespace PhenixRTS.EdgeAuth
                 throw new Exception("URI must not be null");
             }
 
-            _tokenBuilder.Add(DigestTokens.FIELD_URI, uri);
-
+            WriteStringProperty(DigestTokens.FIELD_URI, uri);
             return this;
         }
+
 
         /// <summary>
         /// The application ID used to sign the token (required).
@@ -94,12 +132,12 @@ namespace PhenixRTS.EdgeAuth
                 throw new Exception("Capability must not be null");
             }
 
-            if (_capabilitiesBuilder == null)
+            if (capabilitiesBuilder == null)
             {
-                _capabilitiesBuilder = new JArray();
+                capabilitiesBuilder = new List<string>();
             }
 
-            _capabilitiesBuilder.Add(capability);
+            capabilitiesBuilder.Add(capability);
 
             return this;
         }
@@ -111,7 +149,7 @@ namespace PhenixRTS.EdgeAuth
         /// <returns>Itself</returns>
         public TokenBuilder ExpiresInSeconds(long seconds)
         {
-            _tokenBuilder.Add(DigestTokens.FIELD_EXPIRES, (long)DateTime.UtcNow.Subtract(DateTimeOffset.UnixEpoch.UtcDateTime).TotalMilliseconds + (seconds * 1000));
+            WriteNumberProperty(DigestTokens.FIELD_EXPIRES, (long)DateTime.UtcNow.Subtract(DateTimeOffset.UnixEpoch.UtcDateTime).TotalMilliseconds + (seconds * 1000));
 
             return this;
         }
@@ -127,8 +165,7 @@ namespace PhenixRTS.EdgeAuth
             {
                 throw new Exception("Expiration date must not be null");
             }
-
-            _tokenBuilder.Add(DigestTokens.FIELD_EXPIRES, (long)expirationDate.Subtract(DateTimeOffset.UnixEpoch.UtcDateTime).TotalMilliseconds);
+            WriteNumberProperty(DigestTokens.FIELD_EXPIRES, (long)expirationDate.Subtract(DateTimeOffset.UnixEpoch.UtcDateTime).TotalMilliseconds);
 
             return this;
         }
@@ -139,8 +176,7 @@ namespace PhenixRTS.EdgeAuth
         /// <returns>Itself</returns>
         public TokenBuilder ForAuthenticationOnly()
         {
-            _tokenBuilder.Add(FIELD_TYPE, "auth");
-
+            WriteStringProperty(FIELD_TYPE, "auth");
             return this;
         }
 
@@ -150,7 +186,7 @@ namespace PhenixRTS.EdgeAuth
         /// <returns>Itself</returns>
         public TokenBuilder ForStreamingOnly()
         {
-            _tokenBuilder.Add(FIELD_TYPE, "stream");
+            WriteStringProperty(FIELD_TYPE, "stream");
 
             return this;
         }
@@ -161,7 +197,7 @@ namespace PhenixRTS.EdgeAuth
         /// <returns>Itself</returns>
         public TokenBuilder ForPublishingOnly()
         {
-            _tokenBuilder.Add(FIELD_TYPE, "publish");
+            WriteStringProperty(FIELD_TYPE, "publish");
 
             return this;
         }
@@ -178,7 +214,7 @@ namespace PhenixRTS.EdgeAuth
                 throw new Exception("Session ID must not be null");
             }
 
-            _tokenBuilder.Add(FIELD_SESSION_ID, sessionId);
+            WriteStringProperty(FIELD_SESSION_ID, sessionId);
 
             return this;
         }
@@ -195,7 +231,7 @@ namespace PhenixRTS.EdgeAuth
                 throw new Exception("Remote address must not be null");
             }
 
-            _tokenBuilder.Add(FIELD_REMOTE_ADDRESS_ID, remoteAddress);
+            WriteStringProperty(FIELD_REMOTE_ADDRESS_ID, remoteAddress);
 
             return this;
         }
@@ -227,7 +263,7 @@ namespace PhenixRTS.EdgeAuth
                 throw new Exception("Origin Stream ID must not be null");
             }
 
-            _tokenBuilder.Add(FIELD_ORIGIN_STREAM_ID, originStreamId);
+            WriteStringProperty(FIELD_ORIGIN_STREAM_ID, originStreamId);
 
             return this;
         }
@@ -304,7 +340,7 @@ namespace PhenixRTS.EdgeAuth
                 throw new Exception("Tag must not be null");
             }
 
-            _tokenBuilder.Add(FIELD_REQUIRED_TAG, tag);
+            WriteStringProperty(FIELD_REQUIRED_TAG, tag);
 
             return this;
         }
@@ -321,20 +357,21 @@ namespace PhenixRTS.EdgeAuth
                 throw new Exception("Tag must not be null");
             }
 
-            if (_tagBuilder == null)
+            if (tagBuilder == null)
             {
-                _tagBuilder = new JArray();
+                tagBuilder = new List<string>();
             }
 
-            _tagBuilder.Add(tag);
+            tagBuilder.Add(tag);
 
             return this;
         }
 
         public string GetValue()
         {
-            return _tokenBuilder.ToString();
+            return tokenBuilder.ToString();
         }
+        JsonDocument tokenBuilder;
 
         /// <summary>
         /// Build the signed token.
@@ -342,19 +379,25 @@ namespace PhenixRTS.EdgeAuth
         /// <returns>The signed token that can be used with the Phenix platform</returns>
         public string Build()
         {
-            DigestTokens digestTokens = new DigestTokens();
+            DigestTokens digestTokensTextJson = new DigestTokens();
 
-            if (_capabilitiesBuilder != null)
+            if (capabilitiesBuilder != null)
             {
-                _tokenBuilder.Add(FIELD_CAPABILITIES, _capabilitiesBuilder);
+                WriteCapabilities();
             }
 
-            if (_tagBuilder != null)
+            if (tagBuilder != null)
             {
-                _tokenBuilder.Add(FIELD_APPLY_TAGS, _tagBuilder);
+                WriteTags();
             }
+            utf8JsonWriter1.WriteEndObject();
+            utf8JsonWriter1.Flush();
 
-            return digestTokens.SignAndEncode(_applicationId, _secret, _tokenBuilder);
+            var resultJson = Encoding.UTF8.GetString(memoryStream1.ToArray());
+            tokenBuilder = JsonDocument.Parse(resultJson);
+            var res = digestTokensTextJson.SignAndEncode(_applicationId, _secret, tokenBuilder);
+
+            return res;
         }
     }
 }
