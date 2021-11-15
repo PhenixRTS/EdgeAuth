@@ -66,11 +66,11 @@ class TokenBuilder:
             raise TypeError('Capability must be a string')
 
         token = self.token
-        capabilities = set(token['capabilities']) if 'capabilities' in token else set([])
+        capabilities = token['capabilities'] if 'capabilities' in token else []
 
-        capabilities.add(capability)
+        capabilities.append(capability)
 
-        self.token['capabilities'] = sorted(list(capabilities))
+        self.token['capabilities'] = capabilities
 
         return self
 
@@ -237,11 +237,11 @@ class TokenBuilder:
             raise TypeError('Tag must be a string')
 
         token = self.token
-        apply_tags = set(token['applyTags']) if 'applyTags' in token else set()
+        apply_tags = token['applyTags'] if 'applyTags' in token else []
 
-        apply_tags.add(tag)
+        apply_tags.append(tag)
 
-        self.token['applyTags'] = list(apply_tags)
+        self.token['applyTags'] = apply_tags
 
         return self
 
