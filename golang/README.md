@@ -10,13 +10,13 @@ Authorization Digest Tokens (this installs the executable into
 `$GOPATH/bin`):
 
 ```shell script
-$ go install github.com/PhenixRTS/EdgeAuth/golang/...@v0.0.1
+$ go install github.com/PhenixRTS/EdgeAuth/golang/...@v1.2.5
 ```
 
 To install the Go package to develop against:
 
 ```shell script
-$ go get github.com/PhenixRTS/EdgeAuth/golang@v0.0.1
+$ go get github.com/PhenixRTS/EdgeAuth/golang@v1.2.5
 ```
 
 To build the `edgeauth` executable from source, clone this repository
@@ -81,7 +81,7 @@ func main() {
 Build and run the example:
 
 ```shell script
-$ go get github.com/PhenixRTS/EdgeAuth/golang@v0.0.1
+$ go get github.com/PhenixRTS/EdgeAuth/golang@v1.2.5
 $ go build
 $ ./edgeauth-test
 ```

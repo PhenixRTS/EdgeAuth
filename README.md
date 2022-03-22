@@ -9,3 +9,4 @@ We currently provide SDKs for the following platforms:
 * [PHP](./php)
 * [DotNet](./dotnet)
 * [Python](./python)
+* [Golang](./golang)
