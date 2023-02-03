@@ -12,7 +12,7 @@ namespace PhenixRTS.EdgeAuth.Tests
             _token = new TokenBuilder().WithApplicationId("my-application-id")
                                        .WithSecret("my-secret")
                                        .WithUri("https://my-custom-backend.example.org")
-                                       .ExpiresAt(DateTimeOffset.UnixEpoch.UtcDateTime.AddMilliseconds(1000))
+                                       .ExpiresAt(TokenBuilder.UNIX_EPOCH.AddMilliseconds(1000))
                                        .ForChannelAlias("my-channel")
                                        .ForStreamingOnly()
                                        .Build();

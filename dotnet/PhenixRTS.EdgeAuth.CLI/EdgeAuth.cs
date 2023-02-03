@@ -155,7 +155,7 @@ namespace PhenixRTS.EdgeAuth.CLI
 
             if (!string.IsNullOrEmpty(Capability))
             {
-                foreach (string capability in Capability.Split(","))
+                foreach (string capability in Capability.Split(','))
                 {
                     tokenBuilder.WithCapability(capability.Trim());
                 }

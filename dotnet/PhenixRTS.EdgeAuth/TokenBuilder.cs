@@ -9,6 +9,8 @@ namespace PhenixRTS.EdgeAuth
     /// </summary>
     public sealed class TokenBuilder
     {
+        public static readonly DateTime UNIX_EPOCH = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+
         private const string FIELD_TYPE = "type";
         private const string FIELD_SESSION_ID = "sessionId";
         private const string FIELD_REMOTE_ADDRESS_ID = "remoteAddress";
@@ -111,7 +113,7 @@ namespace PhenixRTS.EdgeAuth
         /// <returns>Itself</returns>
         public TokenBuilder ExpiresInSeconds(long seconds)
         {
-            _tokenBuilder.Add(DigestTokens.FIELD_EXPIRES, (long)DateTime.UtcNow.Subtract(DateTimeOffset.UnixEpoch.UtcDateTime).TotalMilliseconds + (seconds * 1000));
+            _tokenBuilder.Add(DigestTokens.FIELD_EXPIRES, (long)DateTime.UtcNow.Subtract(TokenBuilder.UNIX_EPOCH).TotalMilliseconds + (seconds * 1000));
 
             return this;
         }
@@ -123,12 +125,7 @@ namespace PhenixRTS.EdgeAuth
         /// <returns>Itself</returns>
         public TokenBuilder ExpiresAt(DateTime expirationDate)
         {
-            if (expirationDate == null)
-            {
-                throw new Exception("Expiration date must not be null");
-            }
-
-            _tokenBuilder.Add(DigestTokens.FIELD_EXPIRES, (long)expirationDate.Subtract(DateTimeOffset.UnixEpoch.UtcDateTime).TotalMilliseconds);
+            _tokenBuilder.Add(DigestTokens.FIELD_EXPIRES, (long)expirationDate.Subtract(TokenBuilder.UNIX_EPOCH).TotalMilliseconds);
 
             return this;
         }

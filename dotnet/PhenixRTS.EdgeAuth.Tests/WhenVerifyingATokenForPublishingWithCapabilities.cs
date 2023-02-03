@@ -12,7 +12,7 @@ namespace PhenixRTS.EdgeAuth.Tests
         {
             _token = new TokenBuilder().WithApplicationId("my-application-id")
                                        .WithSecret("my-secret")
-                                       .ExpiresAt(DateTimeOffset.UnixEpoch.UtcDateTime.AddMilliseconds(1000))
+                                       .ExpiresAt(TokenBuilder.UNIX_EPOCH.AddMilliseconds(1000))
                                        .ForPublishingOnly()
                                        .WithCapability("multi-bitrate")
                                        .WithCapability("streaming")

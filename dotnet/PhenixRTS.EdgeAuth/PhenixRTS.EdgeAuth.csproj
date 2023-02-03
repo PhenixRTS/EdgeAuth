@@ -2,24 +2,24 @@
 
   <PropertyGroup>
     <AssemblyName>PhenixRTS.EdgeAuth</AssemblyName>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
     <PackageId>PhenixRTS.EdgeAuth</PackageId>
     <Authors>tgronk;sempi</Authors>
     <Title>Phenix EdgeAuth Digest Tokens Library</Title>
-    <Version>1.2.5</Version>
+    <Version>1.2.6</Version>
      <Description>Easily generate secure digest tokens to use with the Phenix platform without requiring any networking activity.</Description>
-    <Copyright>Copyright (c) 2020 Phenix Real Time Solutions, Inc.</Copyright>
+    <Copyright>Copyright (c) 2023 Phenix Real Time Solutions, Inc.</Copyright>
     <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
     <PackageProjectUrl>https://github.com/PhenixRTS/EdgeAuth</PackageProjectUrl>
     <LangVersion>8.0</LangVersion>
  </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.7" />
+    <None Include="..\LICENSE.md" Pack="true" PackagePath="" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\LICENSE.md" Pack="true" PackagePath=""/>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
   </ItemGroup>
 
 </Project>

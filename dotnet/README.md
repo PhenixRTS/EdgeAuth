@@ -46,11 +46,11 @@ string token = new TokenBuilder()
 Display the help information:
 ```shell script
 cd PhenixRTS.EdgeAuth.CLI
-dotnet run -- --help
+dotnet run --framework net6.0 -- --help
 ```
 
 Create a token for channel access:
 ```shell script
 cd PhenixRTS.EdgeAuth.CLI
-dotnet run -- --applicationId "my-application-id" --secret "my-secret" --expiresInSeconds 3600 --channel "us-northeast#my-application-id#my-channel.1345"
+dotnet run --framework net6.0 -- --applicationId "my-application-id" --secret "my-secret" --expiresInSeconds 3600 --channel "us-northeast#my-application-id#my-channel.1345"
 ```

@@ -177,9 +177,9 @@ namespace PhenixRTS.EdgeAuth
 
                 return new VerifyAndDecodeResult(result);
             }
-            catch (Exception e)
+            catch
             {
-                throw e;
+                return new VerifyAndDecodeResult(ECode.BAD_TOKEN);
             }
         }
 
@@ -223,9 +223,9 @@ namespace PhenixRTS.EdgeAuth
             {
                 tokenAsString = token.ToString().Replace("\r", "").Replace("\n", "").Replace(" ", "");
             }
-            catch (Exception e)
+            catch
             {
-                throw e;
+                throw new Exception("Unable to convert token to string");
             }
 
             string digest;
@@ -234,9 +234,9 @@ namespace PhenixRTS.EdgeAuth
             {
                 digest = CalculateDigest(applicationId, secret, tokenAsString);
             }
-            catch (Exception e)
+            catch
             {
-                throw e;
+                throw new Exception("Unable to calculate digest for token");
             }
 
             JObject info = new JObject();
@@ -248,11 +248,11 @@ namespace PhenixRTS.EdgeAuth
 
             try
             {
-                decodedDigestTokenAsString = info.ToString().Replace("\r", "").Replace("\n", "").Replace(" ", ""); ;
+                decodedDigestTokenAsString = info.ToString().Replace("\r", "").Replace("\n", "").Replace(" ", "");
             }
-            catch (Exception e)
+            catch
             {
-                throw e;
+                throw new Exception("Unable to convert encoded token to string");
             }
 
             byte[] decodedDigestTokenAsBytes = Encoding.UTF8.GetBytes(decodedDigestTokenAsString);

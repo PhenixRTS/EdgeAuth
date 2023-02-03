@@ -11,7 +11,7 @@ namespace PhenixRTS.EdgeAuth.Tests
         {
             _token = new TokenBuilder().WithApplicationId("my-application-id")
                                        .WithSecret("my-secret")
-                                       .ExpiresAt(DateTimeOffset.UnixEpoch.UtcDateTime.AddMilliseconds(1000))
+                                       .ExpiresAt(TokenBuilder.UNIX_EPOCH.AddMilliseconds(1000))
                                        .ForRoom("my-room.123456")
                                        .ForStreamingOnly()
                                        .Build();
